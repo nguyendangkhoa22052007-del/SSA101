@@ -1,0 +1,428 @@
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+}
+
+/* HEADER */
+header{
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    height:70px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.logo h2{
+    color:#0d5c9f;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+}
+
+nav ul li{
+    margin-left:30px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+}
+
+nav ul li a:hover{
+    color:#0d5c9f;
+}
+/* Giao diện thanh tìm kiếm (.search-wrap) */
+.search-wrap { 
+  position: relative; 
+  display: flex;       
+  align-items: center; /* Đảm bảo ô input và nút tìm kiếm luôn bằng vai thẳng hàng */
+  gap: 10px;           /* Khoảng cách 10px giữa ô nhập liệu và nút tìm kiếm */
+  width: 100%;
+  max-width: 500px; 
+  margin: 0 auto;
+}
+
+/* Đảm bảo ô nhập liệu ổn định */
+.search-wrap input#search-input {
+  flex: 1;             /* Tự động kéo giãn để chiếm toàn bộ khoảng trống còn lại */
+  height: 46px;        /* Chiều cao cố định chuẩn */
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+/* Nút tìm kiếm màu cam */
+.banner .search-btn {
+  background: #ff9800;        /* Màu cam thương hiệu */
+  color: #ffffff;             
+  border: none;
+  padding: 0 20px;            /* Padding trái phải để giữ khoảng cách chữ */
+  height: 46px;               /* Chiều cao bằng khít với ô input */
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.2s;
+  white-space: nowrap;        /* Giữ chữ luôn trên một hàng */
+}
+
+.banner .search-btn:hover {
+  background: #e68a00;
+}
+.banner .search-btn:active{
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+/* BANNER */
+.banner{
+    text-align:center;
+    padding:50px 0;
+    background:linear-gradient(to right,#d7efff,#eef7ff);
+}
+
+.banner h1{
+    margin-bottom:20px;
+    color:#222;
+}
+
+.banner input{
+    width:500px;
+    max-width:90%;
+    height:45px;
+    border:none;
+    border-radius:8px;
+    padding-left:15px;
+    font-size:16px;
+}
+
+/* 3 Ô CHỨC NĂNG */
+.container{
+    width:85%;
+    margin:30px auto;
+    display:flex;
+    justify-content:space-between;
+}
+
+.box{
+    width:31%;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.box h2{
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.blue h2{
+    background:#2196F3;
+}
+
+.orange h2{
+    background:#ff9800;
+}
+
+.green h2{
+    background:#4CAF50;
+}
+
+.box h3{
+    margin-bottom:15px;
+}
+
+.box ul{
+    margin-left:20px;
+    margin-bottom:20px;
+}
+
+.box li{
+    margin-bottom:8px;
+}
+
+.box p{
+    line-height:1.6;
+}
+
+.box button{
+    margin-top:20px;
+    border:none;
+    color:white;
+    padding:10px 20px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.blue button{
+    background:#2196F3;
+}
+
+.orange button{
+    background:#ff9800;
+}
+
+.green button{
+    background:#4CAF50;
+}
+/* --- Remove visited styling and underline for links inside the three boxes --- */
+.container .box a,
+.container .box a:link,
+.container .box a:visited,
+.container .box a:hover,
+.container .box a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* If links wrap buttons */
+.container .box a > button {
+  display: inline-block;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* --- Box elevate and hover background --- */
+.container .box {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  will-change: transform, box-shadow;
+  position: relative;
+  z-index: 0;
+}
+
+.container .box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(13,92,159,0.12);
+}
+
+/* Subtle hover backgrounds per box */
+.container .box.blue:hover  { background: #eaf5ff; }
+.container .box.orange:hover{ background: #fff6ec; }
+.container .box.green:hover { background: #f6fff3; }
+
+/* Change title and subtitle color on box hover for contrast */
+.container .box:hover h2,
+.container .box:hover h3 {
+  color: #0d5c9f;
+}
+
+/* --- Button elevate inside boxes --- */
+.container .box button,
+.container .box a > button {
+  transition: transform 0.18s cubic-bezier(.2,.9,.2,1),
+              box-shadow 0.18s cubic-bezier(.2,.9,.2,1),
+              background-color 0.12s ease;
+  will-change: transform, box-shadow;
+  position: relative;
+  z-index: 1;
+}
+
+/* Button hover: lift and stronger shadow */
+.container .box:hover button,
+.container .box a:hover > button {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 36px rgba(13,92,159,0.14);
+}
+
+/* Button active (pressed) */
+.container .box button:active,
+.container .box a > button:active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(13,92,159,0.10);
+}
+
+/* Focus style for keyboard users (accessible) */
+.container .box button:focus,
+.container .box a > button:focus,
+.container .box:focus-within {
+  outline: none;
+  box-shadow: 0 14px 28px rgba(13,92,159,0.12), 0 0 0 4px rgba(13,92,159,0.06);
+  transform: translateY(-6px);
+}
+
+/* Optional: change button background color on box hover for each type */
+.container .box.blue:hover button   { background: #1976d2; color: #fff; }
+.container .box.orange:hover button { background: #ff8a33; color: #fff; }
+.container .box.green:hover button  { background: #43a047; color: #fff; }
+
+/* Ensure no underline or color change for any link state inside boxes */
+.container .box a,
+.container .box a:link,
+.container .box a:visited,
+.container .box a:hover,
+.container .box a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* PHẦN DƯỚI */
+.bottom{
+    width:85%;
+    margin:30px auto;
+    display:flex;
+    justify-content:space-between;
+}
+
+.faq,
+.form{
+    width:48%;
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.faq h2,
+.form h2{
+    margin-bottom:20px;
+}
+
+.faq h4{
+    margin-top:15px;
+}
+
+.faq p{
+    line-height:1.7;
+}
+
+.form input,
+.form textarea{
+    width:100%;
+    margin-bottom:15px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+.form textarea{
+    height:100px;
+}
+
+.form button{
+    background:#2196F3;
+    color:white;
+    border:none;
+    padding:10px 30px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+/* FOOTER */
+footer{
+    background:white;
+    text-align:center;
+    padding:20px;
+    margin-top:40px;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+}
+/* Hộp gợi ý tìm kiếm (Suggest Box) */
+.suggest-list {
+  position: absolute;  
+  left: 0;
+  top: calc(100% + 5px); /* Xuất hiện ngay phía dưới ô nhập liệu và cách ra một chút */
+  
+  /* ĐỘ RỘNG BẰNG KHÍT Ô INPUT:
+     Lấy 100% tổng thể trừ đi bề ngang của nút bấm (khoảng 110px) và khoảng cách gap (10px) */
+  width: calc(100% - 120px); 
+  
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  list-style: none;
+  padding: 4px;
+  margin: 0;   
+  max-height: 200px; 
+  overflow-y: auto;
+  z-index: 9999;       /* Nổi lên trên bề mặt lớp nội dung */
+  display: none;
+  text-align: left;
+}
+
+/* Phần tử gợi ý bên trong */
+.suggest-item {
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #333333;
+  font-size: 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* Hover đổi màu cam sữa nhạt và chữ cam đậm */
+.suggest-item:hover,
+.suggest-item.active {
+  background: #fff4e8; 
+  color: #ff9800;      
+  font-weight: 600;
+}
+/* Bổ sung tương thích cho trang vocab.html */
+#suggest-list.suggest-list {
+  width: 100% !important; /* Trên trang vocab, hộp gợi ý sẽ rộng bằng 100% ô input vì nút bấm nằm ngoài wrap */
+}
+
+/* Fix chiều cao nút bấm trên trang vocab bằng với ô input */
+.class-btn-fix {
+  height: 42px; 
+  white-space: nowrap;
+}
+/* --- CẤU HÌNH RIÊNG CHO TRANG VOCAB (FIX LỖI KÉO GIÃN & MẤT STYLE) --- */
+
+.search-form-vocab {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center; /* Giữ input và nút bấm luôn thẳng hàng dọc */
+}
+
+.search-wrap-vocab {
+  position: relative; /* Làm điểm mốc định vị tuyệt đối cho hộp gợi ý */
+  flex: 1;            /* Cho phép ô nhập liệu chiếm hết khoảng trống */
+}
+
+.search-wrap-vocab input#search-input {
+  width: 100%;        /* Ô nhập liệu luôn lấp đầy wrapper cố định */
+  height: 42px;       /* Chiều cao đồng bộ */
+}
+
+.search-btn-vocab {
+  height: 42px;       /* Chiều cao nút bấm bằng khít với ô input */
+  white-space: nowrap;
+}
+
+/* Ép hộp gợi ý tuân thủ định vị tuyệt đối trên trang Vocab, rộng bằng 100% ô input */
+.search-wrap-vocab .suggest-list {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 5px);
+  width: 100% !important; /* Độ rộng ôm khít theo ô input */
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  list-style: none;
+  padding: 4px;
+  margin: 0;   
+  max-height: 200px; 
+  overflow-y: auto;
+  z-index: 9999;        /* Đè lên trên phần nội dung ý nghĩa bên dưới */
+  text-align: left;
+}

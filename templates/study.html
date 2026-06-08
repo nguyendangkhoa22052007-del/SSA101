@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Học tập - FPT Support</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f4f7fb;
+    font-family:Arial,sans-serif;
+}
+
+/* Thanh trên */
+
+.navbar{
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+    font-size:28px;
+    color:#f57c00;
+    font-weight:bold;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#333;
+    margin-left:30px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    color:#f57c00;
+}
+
+/* Phần chính */
+
+.main{
+    width:90%;
+    margin:40px auto;
+    display:flex;
+}
+
+/* Menu trái */
+
+.sidebar{
+
+    width:25%;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+
+}
+
+.sidebar h2{
+    color:#f57c00;
+    margin-bottom:25px;
+}
+
+.sidebar a{
+
+    display:block;
+
+    text-decoration:none;
+
+    color:#333;
+
+    background:#fff4e8;
+
+    padding:18px;
+
+    margin-bottom:15px;
+
+    border-radius:15px;
+
+    transition:0.3s;
+
+}
+
+.sidebar a:hover{
+
+    background:#f57c00;
+
+    color:white;
+
+}
+
+/* Nội dung */
+
+.content{
+
+    flex:1;
+
+    margin-left:30px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+
+    min-height:500px;
+
+}
+
+.content h1{
+
+    color:#f57c00;
+
+    margin-bottom:30px;
+
+}
+
+.content p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        FPT SUPPORT
+    </div>
+
+    <div class="menu">
+
+        <a href="/">Trang chủ</a>
+
+        <a href="/vocab">Thuật ngữ</a>
+
+        <a href="/hoctap">Học tập</a>
+
+        <a href="#">Hỏi đáp</a>
+
+    </div>
+
+</div>
+
+
+<div class="main">
+
+    <div class="sidebar">
+
+        <h2>📚 Nội dung học</h2>
+
+        <a href="/hoc/Chuyên ngành">💻 Chuyên ngành</a>
+
+        <a href="/hoc/Võ Vovinam">🥋 Võ Vovinam</a>
+
+        <a href="/hoc/Quân sự">🎖️ Quân sự</a>
+
+        <a href="/hoc/Tiếng Anh đầu vào">🇬🇧 Tiếng Anh đầu vào</a>
+
+        <a href="/hoc/Nhạc cụ dân tộc">🎼 Nhạc cụ dân tộc</a>
+
+    </div>
+
+    <div class="content">
+
+        <h1>{{ tieu_de }}</h1>
+
+        <p>{{ ketqua }}</p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
