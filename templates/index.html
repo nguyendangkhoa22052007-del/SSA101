@@ -4,132 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cổng Tra Cứu & Hỗ Trợ FPTU</title>
-    <link rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-
-    <!-- Thanh menu -->
     <header>
         <div class="logo">
-            <h2>FPT Đại Học FPT</h2>
+            <img src="/static/fptulogo.png" alt="FPT University Logo" class="logo-img">
         </div>
 
         <nav>
             <ul>
-                <li><a href="/">Trang Chủ</a></li>
-<li><a href="/vocab">Thuật Ngữ</a></li>
-<li><a href="/study">Học Tập</a></li>
-<li><a href="mailto:dvsv.fudn@fe.edu.vn">Giải Đáp</a></li>
-<li><a href="#">Về Chúng Tôi</a></li>
+                <li><a href="/" class="active">TRANG CHỦ</a></li>
+                <li><a href="/account">TÀI KHOẢN</a></li>
+                <li><a href="/more">THÔNG TIN THÊM</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Phần chào mừng -->
-    <section class="banner">
-        <h1>Chào Mừng Sinh Viên Mới! - Cổng Tra Cứu & Hỗ Trợ FPTU</h1>
+    <section class="banner-hero">
+        <div class="banner-content">
+            <h1>Cổng Tra Cứu và Hỗ Trợ FPTUers</h1>
 
-        <form action="/tim-kiem" method="POST" class="search-form" autocomplete="off">
-  <div class="search-wrap" style="position:relative;">
-    <input id="search-input" type="text" name="keyword"
-           placeholder="Tìm kiếm thuật ngữ, môn học, câu hỏi..." />
-    <button type="submit" class="search-btn">Tìm kiếm</button>
+            <form action="/tim-kiem" method="POST" class="search-form" autocomplete="off">
+                <div class="search-wrap">
+                    <input id="search-input" type="text" name="keyword" placeholder="Tìm kiếm thông tin học tập, thủ tục, v.v..." />
+                    <button type="submit" class="search-btn">
+                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    </button>
+                    <ul id="suggest-list" class="suggest-list" role="listbox" aria-label="Gợi ý tìm kiếm"></ul>
+                </div>
+            </form>
+        </div>
+    </section>
 
-    <!-- Hộp gợi ý -->
-    <ul id="suggest-list" class="suggest-list" role="listbox" aria-label="Gợi ý tìm kiếm"></ul>
-  </div>
-</form>
+    <section class="container-cards">
+
+        <a href="/study" class="card-box">
+            <div class="card-header">
+                <div class="card-icon icon-study">
+                    <svg viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                </div>
+                <h2>HỌC TẬP</h2>
+            </div>
+            <p>Tra cứu chương trình học, lịch thi và các tài liệu liên quan đến khóa học.</p>
+        </a>
+
+        <a href="/vocab" class="card-box">
+            <div class="card-header">
+                <div class="card-icon icon-vocab">
+                    <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5l-1-.75L9 9V4zm9 16H6V4h1v9l2.5-1.88L12 13V4h6v16z"/></svg>
+                </div>
+                <div>
+                    <h2>THUẬT NGỮ</h2>
+                    <span class="sub-title">THƯỜNG GẶP</span>
+                </div>
+            </div>
+            <p>Giải nghĩa các từ ngữ, từ viết tắt và khái niệm chuyên ngành được sử dụng trong trường.</p>
+        </a>
+        <a href="mailto:dvsv.fudn@fe.edu.vn" class="card-box">
+            <div class="card-header">
+                <div class="card-icon icon-faq">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                </div>
+                <h2>GIẢI ĐÁP</h2>
+            </div>
+            <p>Câu hỏi thường gặp về các quy trình, thủ tục hành chính và chính sách cho sinh viên.</p>
+        </a>
 
     </section>
 
-    <!-- Các khung chức năng -->
-    <section class="container">
-
-        <div class="box blue">
-            <h2>HỌC TẬP</h2>
-
-            <h3>Tra Cứu Phương Pháp, Lưu Ý Môn Học & FAQ</h3>
-
-            <ul>
-                <li>Lưu ý học tập</li>
-                <li>Cách học môn Đại số</li>
-                <li>FAQ môn Triết học</li>
-            </ul>
-
-            
-    <button><a href="/study">Khám Phá Thêm</a></button>
+    <a href="#" class="floating-chat-btn">
+        <span>Chat Trực Tuyến</span>
+        <div class="chat-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
         </div>
+    </a>
 
-        <div class="box orange">
-            <h2>THUẬT NGỮ</h2>
-
-            <h3>Tra Cứu Thuật Ngữ Đại Học FPT</h3>
-
-            <p>
-                Giải thích các từ viết tắt thường dùng,
-                tín chỉ, Degree Supplement,...
-            </p>
-
-            
-    <button><a href="/vocab">Tra Cứu Ngay</a></button>
-        </div>
-
-        <div class="box green">
-            <h2>GIẢI ĐÁP</h2>
-
-            <h3>Hỏi Đáp Sinh Viên</h3>
-
-            <p>
-                Nếu bạn có thắc mắc về học tập hay cuộc sống,
-                hãy gửi câu hỏi để được hỗ trợ.
-            </p>
-
-            <button><a href="mailto:dvsv.fudn@fe.edu.vn">Gửi Câu Hỏi</a></button>
-        </div>
-
-    </section>
-
-    <!-- FAQ và form gửi câu hỏi -->
-    <section class="bottom">
-
-        <div class="faq">
-            <h2>Các Câu Hỏi Thường Gặp</h2>
-
-            <h4>Các Câu Hỏi Thường Gặp (FAQs)</h4>
-            <p>
-                Nếu bạn mắc về học tập, thủ tục,
-                cuộc sống sinh viên,...
-            </p>
-
-            <h4>Các Câu Hỏi Thường Gặp (Edu)</h4>
-            <p>
-                Nếu bạn cần hỗ trợ học tập,
-                hãy gửi câu hỏi tại đây.
-            </p>
-
-        </div>
-
-        <div class="form">
-            <h2>Góc Giải Đáp: Gửi Câu Hỏi</h2>
-
-            <input type="text" placeholder="Tiêu đề">
-
-            <textarea placeholder="Nội dung câu hỏi"></textarea>
-
-            <input type="text" placeholder="Tên/MSSV">
-
-            <button>GỬI</button>
-        </div>
-
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>Email: dvsv.fudn@fe.edu.vn</p>
-        <p>Phone: (008) 387-533</p>
-    </footer>
-<script src="{{ url_for('static', filename='search-suggest.js') }}"></script>
+    <script src="{{ url_for('static', filename='search-suggest.js') }}"></script>
 </body>
 </html>

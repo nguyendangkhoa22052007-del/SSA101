@@ -1,428 +1,386 @@
-/* RESET */
+/* RESET HỆ THỐNG */
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    font-family: Arial, sans-serif;
-    background:#f2f2f2;
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fdfdfd;
+    color: #333;
 }
 
-/* HEADER */
-header{
-    background:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 40px;
-    height:70px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+/* HEADER CHUẨN */
+header {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 6%;
+    height: 80px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 10;
 }
 
-.logo h2{
-    color:#0d5c9f;
+.logo .logo-img {
+    height: 120px; /* Điều chỉnh kích thước logo tương đương */
 }
 
-nav ul{
-    display:flex;
-    list-style:none;
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 35px;
 }
 
-nav ul li{
-    margin-left:30px;
+nav ul li a {
+    text-decoration: none;
+    color: #444;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
 }
 
-nav ul li a{
-    text-decoration:none;
-    color:#333;
-    font-weight:bold;
+nav ul li a:hover, 
+nav ul li a.active {
+    color: #d45b12; /* Màu cam chủ đạo FPT */
 }
 
-nav ul li a:hover{
-    color:#0d5c9f;
-}
-/* Giao diện thanh tìm kiếm (.search-wrap) */
-.search-wrap { 
-  position: relative; 
-  display: flex;       
-  align-items: center; /* Đảm bảo ô input và nút tìm kiếm luôn bằng vai thẳng hàng */
-  gap: 10px;           /* Khoảng cách 10px giữa ô nhập liệu và nút tìm kiếm */
-  width: 100%;
-  max-width: 500px; 
-  margin: 0 auto;
+/* HERO BANNER - NỀN ẢNH TRƯỜNG ĐẠI HỌC */
+.banner-hero {
+    position: relative;
+    /* Dùng link ảnh thực tế phối cảnh cơ sở Đà Nẵng */
+    background: url('/static/background.jpg') no-repeat center center/cover;
+    height: 520px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-/* Đảm bảo ô nhập liệu ổn định */
+/* Lớp phủ mờ nhẹ giúp chữ rõ hơn */
+.banner-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.15); 
+    z-index: 1;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.banner-content h1 {
+    font-size: 42px;
+    color: #fff;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+/* THANH TÌM KIẾM VIỀN TRÒN NẰM TRONG */
+.search-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px;
+    border-radius: 40px; /* Bo khít cực đại theo ảnh mẫu */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+}
+
 .search-wrap input#search-input {
-  flex: 1;             /* Tự động kéo giãn để chiếm toàn bộ khoảng trống còn lại */
-  height: 46px;        /* Chiều cao cố định chuẩn */
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  outline: none;
-}
-/* Nút tìm kiếm màu cam */
-.banner .search-btn {
-  background: #ff9800;        /* Màu cam thương hiệu */
-  color: #ffffff;             
-  border: none;
-  padding: 0 20px;            /* Padding trái phải để giữ khoảng cách chữ */
-  height: 46px;               /* Chiều cao bằng khít với ô input */
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background 0.2s;
-  white-space: nowrap;        /* Giữ chữ luôn trên một hàng */
+    flex: 1;
+    height: 52px;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0 25px;
+    font-size: 16px;
+    color: #444;
 }
 
-.banner .search-btn:hover {
-  background: #e68a00;
-}
-.banner .search-btn:active{
-  transform: translateY(0);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+.search-wrap input#search-input::placeholder {
+    color: #888;
 }
 
-/* BANNER */
-.banner{
-    text-align:center;
-    padding:50px 0;
-    background:linear-gradient(to right,#d7efff,#eef7ff);
+/* Nút tìm kiếm icon cam tròn đặt lọt lòng bên phải */
+.search-btn {
+    background: #e16621;
+    border: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.1s;
 }
 
-.banner h1{
-    margin-bottom:20px;
-    color:#222;
+.search-btn:hover {
+    background: #c95316;
 }
 
-.banner input{
-    width:500px;
-    max-width:90%;
-    height:45px;
-    border:none;
-    border-radius:8px;
-    padding-left:15px;
-    font-size:16px;
+.search-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
 }
 
-/* 3 Ô CHỨC NĂNG */
-.container{
-    width:85%;
-    margin:30px auto;
-    display:flex;
-    justify-content:space-between;
+/* 3 KHUNG CHỨC NĂNG ĐÈ LÊN BANNER */
+.container-cards {
+    width: 88%;
+    max-width: 1200px;
+    margin: -70px auto 60px auto; /* Kéo lệch âm 70px để đè lên banner như ảnh */
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
 }
 
-.box{
-    width:31%;
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+.card-box {
+    width: 33.33%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(5px); /* Hiệu ứng mờ đục nhẹ kính cường lực */
+    border: 1px solid rgba(225, 102, 33, 0.2);
+    border-radius: 16px;
+    padding: 30px 24px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.box h2{
-    color:white;
-    padding:12px;
-    border-radius:10px;
-    margin-bottom:20px;
+.card-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(225, 102, 33, 0.15);
+    background: #ffffff;
 }
 
-.blue h2{
-    background:#2196F3;
+/* Cấu trúc Header trong thẻ */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.orange h2{
-    background:#ff9800;
+.card-header h2 {
+    font-size: 20px;
+    color: #111;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-.green h2{
-    background:#4CAF50;
+.card-header .sub-title {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-top: -2px;
 }
 
-.box h3{
-    margin-bottom:15px;
+/* Định vị và màu Icon */
+.card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.box ul{
-    margin-left:20px;
-    margin-bottom:20px;
+.card-icon svg {
+    width: 32px;
+    height: 32px;
 }
 
-.box li{
-    margin-bottom:8px;
+/* Đồng bộ màu Icon theo viền mẫu của ảnh gốc */
+.icon-study svg { fill: #d07454; }
+.icon-vocab svg { fill: #cc8247; }
+.icon-faq svg { fill: #d37e4a; }
+
+.card-box p {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
 }
 
-.box p{
-    line-height:1.6;
-}
+/* ==========================================================================
+   CẤU HÌNH HỘP GỢI Ý ĐỒNG BỘ CHO TOÀN BỘ WEBSITE (TRANG CHỦ & TRANG VOCAB)
+   ========================================================================== */
 
-.box button{
-    margin-top:20px;
-    border:none;
-    color:white;
-    padding:10px 20px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-.blue button{
-    background:#2196F3;
-}
-
-.orange button{
-    background:#ff9800;
-}
-
-.green button{
-    background:#4CAF50;
-}
-/* --- Remove visited styling and underline for links inside the three boxes --- */
-.container .box a,
-.container .box a:link,
-.container .box a:visited,
-.container .box a:hover,
-.container .box a:active {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* If links wrap buttons */
-.container .box a > button {
-  display: inline-block;
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: inherit;
-  cursor: pointer;
-}
-
-/* --- Box elevate and hover background --- */
-.container .box {
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
-  will-change: transform, box-shadow;
-  position: relative;
-  z-index: 0;
-}
-
-.container .box:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(13,92,159,0.12);
-}
-
-/* Subtle hover backgrounds per box */
-.container .box.blue:hover  { background: #eaf5ff; }
-.container .box.orange:hover{ background: #fff6ec; }
-.container .box.green:hover { background: #f6fff3; }
-
-/* Change title and subtitle color on box hover for contrast */
-.container .box:hover h2,
-.container .box:hover h3 {
-  color: #0d5c9f;
-}
-
-/* --- Button elevate inside boxes --- */
-.container .box button,
-.container .box a > button {
-  transition: transform 0.18s cubic-bezier(.2,.9,.2,1),
-              box-shadow 0.18s cubic-bezier(.2,.9,.2,1),
-              background-color 0.12s ease;
-  will-change: transform, box-shadow;
-  position: relative;
-  z-index: 1;
-}
-
-/* Button hover: lift and stronger shadow */
-.container .box:hover button,
-.container .box a:hover > button {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 36px rgba(13,92,159,0.14);
-}
-
-/* Button active (pressed) */
-.container .box button:active,
-.container .box a > button:active {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(13,92,159,0.10);
-}
-
-/* Focus style for keyboard users (accessible) */
-.container .box button:focus,
-.container .box a > button:focus,
-.container .box:focus-within {
-  outline: none;
-  box-shadow: 0 14px 28px rgba(13,92,159,0.12), 0 0 0 4px rgba(13,92,159,0.06);
-  transform: translateY(-6px);
-}
-
-/* Optional: change button background color on box hover for each type */
-.container .box.blue:hover button   { background: #1976d2; color: #fff; }
-.container .box.orange:hover button { background: #ff8a33; color: #fff; }
-.container .box.green:hover button  { background: #43a047; color: #fff; }
-
-/* Ensure no underline or color change for any link state inside boxes */
-.container .box a,
-.container .box a:link,
-.container .box a:visited,
-.container .box a:hover,
-.container .box a:active {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* PHẦN DƯỚI */
-.bottom{
-    width:85%;
-    margin:30px auto;
-    display:flex;
-    justify-content:space-between;
-}
-
-.faq,
-.form{
-    width:48%;
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-.faq h2,
-.form h2{
-    margin-bottom:20px;
-}
-
-.faq h4{
-    margin-top:15px;
-}
-
-.faq p{
-    line-height:1.7;
-}
-
-.form input,
-.form textarea{
-    width:100%;
-    margin-bottom:15px;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:6px;
-}
-
-.form textarea{
-    height:100px;
-}
-
-.form button{
-    background:#2196F3;
-    color:white;
-    border:none;
-    padding:10px 30px;
-    border-radius:7px;
-    cursor:pointer;
-}
-
-/* FOOTER */
-footer{
-    background:white;
-    text-align:center;
-    padding:20px;
-    margin-top:40px;
-    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
-}
-/* Hộp gợi ý tìm kiếm (Suggest Box) */
-.suggest-list {
-  position: absolute;  
-  left: 0;
-  top: calc(100% + 5px); /* Xuất hiện ngay phía dưới ô nhập liệu và cách ra một chút */
-  
-  /* ĐỘ RỘNG BẰNG KHÍT Ô INPUT:
-     Lấy 100% tổng thể trừ đi bề ngang của nút bấm (khoảng 110px) và khoảng cách gap (10px) */
-  width: calc(100% - 120px); 
-  
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.15);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  list-style: none;
-  padding: 4px;
-  margin: 0;   
-  max-height: 200px; 
-  overflow-y: auto;
-  z-index: 9999;       /* Nổi lên trên bề mặt lớp nội dung */
-  display: none;
-  text-align: left;
-}
-
-/* Phần tử gợi ý bên trong */
-.suggest-item {
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #333333;
-  font-size: 14px;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-/* Hover đổi màu cam sữa nhạt và chữ cam đậm */
-.suggest-item:hover,
-.suggest-item.active {
-  background: #fff4e8; 
-  color: #ff9800;      
-  font-weight: 600;
-}
-/* Bổ sung tương thích cho trang vocab.html */
-#suggest-list.suggest-list {
-  width: 100% !important; /* Trên trang vocab, hộp gợi ý sẽ rộng bằng 100% ô input vì nút bấm nằm ngoài wrap */
-}
-
-/* Fix chiều cao nút bấm trên trang vocab bằng với ô input */
-.class-btn-fix {
-  height: 42px; 
-  white-space: nowrap;
-}
-/* --- CẤU HÌNH RIÊNG CHO TRANG VOCAB (FIX LỖI KÉO GIÃN & MẤT STYLE) --- */
-
-.search-form-vocab {
-  display: flex;
-  gap: 10px;
+/* 1. ĐỐI VỚI TRANG CHỦ (.banner-hero) */
+.banner-hero .search-wrap {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
   width: 100%;
-  align-items: center; /* Giữ input và nút bấm luôn thẳng hàng dọc */
+}
+
+/* Ô input trang chủ */
+.banner-hero .search-wrap input#search-input {
+  flex: 1;
+  width: 100%;
+  outline: none;
+}
+
+/* Hộp gợi ý rớt xuống ở Trang Chủ (Rộng bằng khít ô input, trừ khoảng trống của nút tìm kiếm) */
+.banner-hero .search-wrap #suggest-list.suggest-list {
+  position: absolute !important;
+  left: 0 !important;
+  top: calc(100% + 6px) !important; /* Xuất hiện ngay sát mép dưới và cách ra 6px tinh tế */
+  width: calc(100% - 70px) !important; /* Tự động tính toán thụt lề vừa khít rìa phải ô input */
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+  list-style: none !important;
+  padding: 6px !important;
+  margin: 0 !important;   
+  max-height: 220px !important; 
+  overflow-y: auto !important;
+  z-index: 9999 !important; /* Đè lên trên các card nội dung bên dưới */
+  text-align: left !important;
+}
+
+
+/* 2. ÁP DỤNG TRÊN TRANG THUẬT NGỮ (.search-form-vocab) */
+.search-form-vocab {
+    display: flex !important;       /* Đưa input wrap và nút bấm nằm ngang hàng */
+    align-items: center !important;  /* Thẳng hàng trục dọc */
+    gap: 12px !important;            /* Khoảng cách 12px */
+    width: 100% !important;
 }
 
 .search-wrap-vocab {
-  position: relative; /* Làm điểm mốc định vị tuyệt đối cho hộp gợi ý */
-  flex: 1;            /* Cho phép ô nhập liệu chiếm hết khoảng trống */
+    position: relative !important;
+    flex: 1 !important;              /* Chiếm toàn bộ khoảng trống bên trái */
 }
 
 .search-wrap-vocab input#search-input {
-  width: 100%;        /* Ô nhập liệu luôn lấp đầy wrapper cố định */
-  height: 42px;       /* Chiều cao đồng bộ */
+    width: 100% !important;
+    height: 44px !important;         /* Chiều cao cố định */
+    padding: 0 15px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
 }
 
 .search-btn-vocab {
-  height: 42px;       /* Chiều cao nút bấm bằng khít với ô input */
-  white-space: nowrap;
+    height: 44px !important;         /* Chiều cao bằng khít với ô input */
+    padding: 0 20px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
 }
 
-/* Ép hộp gợi ý tuân thủ định vị tuyệt đối trên trang Vocab, rộng bằng 100% ô input */
-.search-wrap-vocab .suggest-list {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 5px);
-  width: 100% !important; /* Độ rộng ôm khít theo ô input */
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.15);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  list-style: none;
-  padding: 4px;
-  margin: 0;   
-  max-height: 200px; 
-  overflow-y: auto;
-  z-index: 9999;        /* Đè lên trên phần nội dung ý nghĩa bên dưới */
-  text-align: left;
+/* Hộp gợi ý trên trang Vocab (Rộng 100% bằng ô input) */
+.search-wrap-vocab #suggest-list.suggest-list {
+    position: absolute !important;
+    left: 0 !important;
+    top: calc(100% + 6px) !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    list-style: none !important;
+    padding: 6px !important;
+    margin: 0 !important;   
+    max-height: 220px !important; 
+    overflow-y: auto !important;
+    z-index: 9999 !important;
+    text-align: left !important;
+}
+
+/* 3. STYLE CHUNG CHO CÁC ITEM GỢI Ý (ÁP DỤNG CẢ 2 TRANG) */
+.suggest-item {
+  padding: 10px 14px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  color: #333333 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  list-style-type: none !important;
+  text-align: left !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+/* HIỆU ỨNG HOVER HOẶC PHÍM MŨI TÊN (ĐÚNG YÊU CẦU MÀU CAM SỮA NHẠT) */
+.suggest-item:hover,
+.suggest-item.active {
+  background: #fff4e8 !important; /* Nền màu cam sữa nhạt dịu mắt */
+  color: #ff9800 !important;      /* Chữ đổi sang cam đậm thương hiệu */
+  font-weight: 600 !important;
+}
+/* NÚT CHAT BÊN DƯỚI GÓC PHẢI */
+.floating-chat-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #ffffff;
+    padding: 8px 8px 8px 22px;
+    border-radius: 35px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    z-index: 9999;
+    transition: transform 0.2s;
+}
+
+.floating-chat-btn:hover {
+    transform: scale(1.05);
+}
+
+.floating-chat-btn span {
+    color: #111;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.floating-chat-btn .chat-icon {
+    background: #e16621;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-chat-btn .chat-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+}
+
+/* Responsive cơ bản cho Mobile */
+@media (max-width: 768px) {
+    .container-cards {
+        flex-direction: column;
+        margin-top: -40px;
+    }
+    .card-box {
+        width: 100%;
+    }
+    .banner-content h1 {
+        font-size: 28px;
+    }
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+    }
 }
