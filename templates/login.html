@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập - FPT Support</title>
 
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    height:100vh;
+    background:url("/static/background.jpg");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+body::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.15);
+}
+
+.logo{
+    position:absolute;
+    top:20px;
+    left:30px;
+    z-index:2;
+}
+
+.logo img{
+    height:100px;
+}
+
+.container{
+    position:relative;
+    z-index:2;
+
+    width:400px;
+
+    background:rgba(255,255,255,0.95);
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
+
+    text-align:center;
+}
+
+h1{
+    color:#f57c00;
+    margin-bottom:30px;
+}
+
+input{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+    border:none;
+
+    background:#f4f4f4;
+
+    border-radius:10px;
+
+    font-size:16px;
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#f57c00;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+button:hover{
+    background:#e26d00;
+}
+
+p{
+    margin-top:20px;
+}
+
+a{
+    text-decoration:none;
+    color:#f57c00;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="logo">
+    <img src="/static/fptulogo.png">
+</div>
+
+<div class="container">
+
+    <h1>ĐĂNG NHẬP</h1>
+
+    <form method="POST">
+
+        <input
+        type="text"
+        name="username"
+        placeholder="Tên tài khoản"
+        required>
+
+        <input
+        type="password"
+        name="password"
+        placeholder="Mật khẩu"
+        required>
+
+        <button type="submit">
+
+            Đăng nhập
+
+        </button>
+
+    </form>
+
+    <p>
+
+        Chưa có tài khoản?
+
+        <a href="/register">
+
+            Đăng ký
+
+        </a>
+
+    </p>
+
+</div>
+
+</body>
+</html>
