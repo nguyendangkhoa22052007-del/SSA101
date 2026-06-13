@@ -116,7 +116,30 @@ a{
     color:#f57c00;
     font-weight:bold;
 }
+.password-box{
+    position:relative;
+    margin-bottom:20px;
+}
 
+.password-box input{
+    width:100%;
+    margin-bottom:0;
+}
+
+.eye-btn{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:20px;
+    color:#777;
+    user-select:none;
+}
+
+.eye-btn:hover{
+    color:#f57c00;
+}
 </style>
 
 </head>
@@ -130,6 +153,11 @@ a{
 <div class="container">
 
     <h1>ĐĂNG NHẬP</h1>
+    {% if error %}
+<div class="error">
+    {{ error }}
+</div>
+{% endif %}
 
     <form method="POST">
 
@@ -138,12 +166,22 @@ a{
         name="username"
         placeholder="Tên tài khoản"
         required>
+        <div class="password-box">
 
-        <input
+    <input
         type="password"
         name="password"
+        id="password"
         placeholder="Mật khẩu"
         required>
+
+    <span class="eye-btn" onclick="togglePassword()">
+        👁
+    </span>
+
+</div>
+
+        
 
         <button type="submit">
 
@@ -166,6 +204,23 @@ a{
     </p>
 
 </div>
+<script>
+function togglePassword(){
 
+    let x = document.getElementById("password");
+
+    if(x.type == "password"){
+
+        x.type = "text";
+
+    }
+
+    else{
+
+        x.type = "password";
+
+    }
+}
+</script>
 </body>
 </html>
