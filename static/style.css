@@ -384,3 +384,242 @@ nav ul li a.active {
         gap: 15px;
     }
 }
+```css
+/* ==========================
+   THÔNG BÁO LỖI
+========================== */
+.error{
+    background: #fff4e8;
+    color: #e26d00;
+
+    padding: 15px 20px;
+
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+
+    font-weight: 600;
+
+    border-left: 5px solid #ff9800;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* ==========================
+   HIỂN THỊ TÊN NGƯỜI DÙNG
+========================== */
+.username{
+    color: #e16621;
+    font-weight: bold;
+}
+
+/* ==========================
+   NÚT ĐĂNG XUẤT
+========================== */
+.logout-btn{
+    background: #e16621;
+    color: white !important;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.logout-btn:hover{
+    background: #c95316;
+}
+
+/* ==========================
+   THẺ TÀI KHOẢN
+========================== */
+.account-card{
+
+    width: 500px;
+
+    margin: 60px auto;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+    text-align: center;
+}
+
+.account-card h1{
+    color: #e16621;
+    margin-bottom: 25px;
+}
+
+.account-card p{
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+/* ==========================
+   FORM LOGIN - REGISTER
+========================== */
+
+.form-box{
+
+    width: 430px;
+
+    margin: auto;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.form-box h1{
+
+    text-align: center;
+
+    color: #e16621;
+
+    margin-bottom: 30px;
+}
+
+.form-box input{
+
+    width: 100%;
+
+    height: 50px;
+
+    margin-bottom: 20px;
+
+    padding: 0 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.form-box input:focus{
+
+    border-color: #e16621;
+}
+
+.form-box button{
+
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+
+    background: #e16621;
+
+    color: white;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.form-box button:hover{
+
+    background: #c95316;
+}
+
+.form-link{
+
+    text-align: center;
+
+    margin-top: 20px;
+}
+
+.form-link a{
+
+    color: #e16621;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+/* ==========================
+   Ô nhập mật khẩu
+========================== */
+
+.password-box{
+
+    position: relative;
+
+}
+
+.password-box input{
+
+    width: 100%;
+}
+
+.eye-btn{
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    user-select: none;
+}
+/* ==========================
+   Ô mật khẩu + icon mắt
+========================== */
+
+.password-box{
+
+    position: relative;
+
+}
+
+.password-box input{
+
+    width: 100%;
+}
+
+.eye-btn{
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    user-select: none;
+
+}
