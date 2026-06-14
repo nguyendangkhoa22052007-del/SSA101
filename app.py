@@ -16,28 +16,103 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
+from datetime import datetime
+
 # ==========================
-# BẢNG USER
+# BẢNG USER (Cấu hình chuẩn)
 # ==========================
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    # Khai báo mối quan hệ để lấy danh sách bài đăng của user dễ dàng
+    posts = db.relationship('Post', backref='author', lazy=True)
+    # Thêm dòng này để liên kết với các bình luận của user
+    comments = db.relationship('Comment', backref='commenter', lazy=True)
 
-    username = db.Column(
-        db.String(100),
-        unique=True,
-        nullable=False
-    )
+# ==========================
+# BẢNG POST (Diễn đàn)
+# ==========================
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # Thêm dòng này để lấy danh sách bình luận của bài viết dễ dàng
+    comments = db.relationship('Comment', backref='post', lazy=True, cascade="all, delete-orphan")
 
-    password = db.Column(
-        db.String(200),
-        nullable=False
-    )
-
-
+# ==========================
+# BẢNG COMMENT (Mới thêm)
+# ==========================
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)                                # Nội dung bình luận
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) # Thời gian bình luận
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)     # Bình luận thuộc bài viết nào
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)     # Ai là người bình luận
+# Đảm bảo tạo bảng (Giữ nguyên hoặc đưa xuống dưới cùng trước app.run)
 with app.app_context():
     db.create_all()
 
 
+# ==========================
+# ROUTE DIỄN ĐÀN (FORUM)
+# ==========================
+@app.route("/forum", methods=["GET", "POST"])
+def forum():
+    # Cơ chế "Bảo hiểm": Nếu chưa đăng nhập, tự động tạo/gán tài khoản ẩn danh để không bị văng lỗi
+    if "username" not in session:
+        session["username"] = "SinhVienAnDanh"
+
+    # Tìm user hiện tại trong Database
+    current_user = User.query.filter_by(username=session["username"]).first()
+    
+    # Nếu tài khoản (kể cả ẩn danh) chưa tồn tại trong Database, tự tạo mới luôn
+    if not current_user:
+        current_user = User(username=session["username"], password=generate_password_hash("123456"))
+        db.session.add(current_user)
+        db.session.commit()
+
+    # Xử lý khi sinh viên nhấn nút "Đăng bài lên diễn đàn"
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        content = request.form.get("content", "").strip()
+        
+        if title and content:
+            # Tạo bài đăng mới liên kết với user hiện tại thông qua biến author
+            new_post = Post(title=title, content=content, author=current_user)
+            db.session.add(new_post)
+            db.session.commit()
+            return redirect("/forum")
+
+    # Lấy toàn bộ bài viết từ mới nhất tới cũ nhất để hiển thị ra giao diện
+    all_posts = Post.query.order_by(Post.date_posted.desc()).all()
+    
+    return render_template(
+        "forum.html",
+        posts=all_posts,
+        username=session["username"]
+    )
+# (Giữ nguyên đoạn db.create_all() phía dưới của bạn để Flask tự tạo bảng mới này vào database.db)
+# ==========================
+# ROUTE XỬ LÝ BÌNH LUẬN
+# ==========================
+@app.route("/forum/comment/<int:post_id>", methods=["POST"])
+def add_comment(post_id):
+    if "username" not in session:
+        return redirect("/login")
+        
+    current_user = User.query.filter_by(username=session["username"]).first()
+    comment_content = request.form.get("comment_content", "").strip()
+    
+    if comment_content:
+        # Tạo đối tượng bình luận mới đi kèm thông tin bài viết và người dùng
+        new_comment = Comment(content=comment_content, post_id=post_id, commenter=current_user)
+        db.session.add(new_comment)
+        db.session.commit()
+        
+    return redirect("/forum")
 # ==========================
 # ĐỌC FILE EXCEL
 # ==========================
