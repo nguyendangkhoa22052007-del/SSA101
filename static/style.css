@@ -1,4 +1,6 @@
-/* RESET HỆ THỐNG */
+/* ==========================================================================
+   1. CÀI ĐẶT CHUNG (RESET HỆ THỐNG)
+   ========================================================================== */
 *{
     margin: 0;
     padding: 0;
@@ -11,7 +13,10 @@ body {
     color: #333;
 }
 
-/* HEADER CHUẨN */
+
+/* ==========================================================================
+   2. THANH ĐIỀU HƯỚNG (HEADER / NAVBAR)
+   ========================================================================== */
 header {
     background: white;
     display: flex;
@@ -48,10 +53,12 @@ nav ul li a.active {
     color: #d45b12; /* Màu cam chủ đạo FPT */
 }
 
-/* HERO BANNER - NỀN ẢNH TRƯỜNG ĐẠI HỌC */
+
+/* ==========================================================================
+   3. BANNER TRANG CHỦ & THANH TÌM KIẾM
+   ========================================================================== */
 .banner-hero {
     position: relative;
-    /* Dùng link ảnh thực tế phối cảnh cơ sở Đà Nẵng */
     background: url('/static/background.jpg') no-repeat center center/cover;
     height: 520px;
     display: flex;
@@ -85,7 +92,7 @@ nav ul li a.active {
     margin-bottom: 30px;
 }
 
-/* THANH TÌM KIẾM VIỀN TRÒN NẰM TRONG */
+/* Thanh tìm kiếm viền tròn */
 .search-wrap {
     position: relative;
     width: 100%;
@@ -93,7 +100,7 @@ nav ul li a.active {
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.95);
     padding: 6px;
-    border-radius: 40px; /* Bo khít cực đại theo ảnh mẫu */
+    border-radius: 40px; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     display: flex;
     align-items: center;
@@ -138,11 +145,14 @@ nav ul li a.active {
     fill: #ffffff;
 }
 
-/* 3 KHUNG CHỨC NĂNG ĐÈ LÊN BANNER */
+
+/* ==========================================================================
+   4. CÁC THẺ CHỨC NĂNG (TRANG CHỦ)
+   ========================================================================== */
 .container-cards {
     width: 88%;
     max-width: 1200px;
-    margin: -70px auto 60px auto; /* Kéo lệch âm 70px để đè lên banner như ảnh */
+    margin: -70px auto 60px auto; /* Kéo lệch âm 70px để đè lên banner */
     position: relative;
     z-index: 5;
     display: flex;
@@ -153,7 +163,7 @@ nav ul li a.active {
 .card-box {
     width: 33.33%;
     background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(5px); /* Hiệu ứng mờ đục nhẹ kính cường lực */
+    backdrop-filter: blur(5px);
     border: 1px solid rgba(225, 102, 33, 0.2);
     border-radius: 16px;
     padding: 30px 24px;
@@ -169,7 +179,6 @@ nav ul li a.active {
     background: #ffffff;
 }
 
-/* Cấu trúc Header trong thẻ */
 .card-header {
     display: flex;
     align-items: center;
@@ -191,7 +200,6 @@ nav ul li a.active {
     margin-top: -2px;
 }
 
-/* Định vị và màu Icon */
 .card-icon {
     width: 44px;
     height: 44px;
@@ -205,7 +213,6 @@ nav ul li a.active {
     height: 32px;
 }
 
-/* Đồng bộ màu Icon theo viền mẫu của ảnh gốc */
 .icon-study svg { fill: #d07454; }
 .icon-vocab svg { fill: #cc8247; }
 .icon-faq svg { fill: #d37e4a; }
@@ -216,11 +223,12 @@ nav ul li a.active {
     line-height: 1.6;
 }
 
+
 /* ==========================================================================
-   CẤU HÌNH HỘP GỢI Ý ĐỒNG BỘ CHO TOÀN BỘ WEBSITE (TRANG CHỦ & TRANG VOCAB)
+   5. HỘP GỢI Ý TÌM KIẾM (AUTOCOMPLETE)
    ========================================================================== */
 
-/* 1. ĐỐI VỚI TRANG CHỦ (.banner-hero) */
+/* Trang Chủ (.banner-hero) */
 .banner-hero .search-wrap {
   position: relative !important;
   display: flex !important;
@@ -228,19 +236,17 @@ nav ul li a.active {
   width: 100%;
 }
 
-/* Ô input trang chủ */
 .banner-hero .search-wrap input#search-input {
   flex: 1;
   width: 100%;
   outline: none;
 }
 
-/* Hộp gợi ý rớt xuống ở Trang Chủ (Rộng bằng khít ô input, trừ khoảng trống của nút tìm kiếm) */
 .banner-hero .search-wrap #suggest-list.suggest-list {
   position: absolute !important;
   left: 0 !important;
-  top: calc(100% + 6px) !important; /* Xuất hiện ngay sát mép dưới và cách ra 6px tinh tế */
-  width: calc(100% - 70px) !important; /* Tự động tính toán thụt lề vừa khít rìa phải ô input */
+  top: calc(100% + 6px) !important; 
+  width: calc(100% - 70px) !important; 
   background: #ffffff !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   border-radius: 12px !important;
@@ -250,40 +256,38 @@ nav ul li a.active {
   margin: 0 !important;   
   max-height: 220px !important; 
   overflow-y: auto !important;
-  z-index: 9999 !important; /* Đè lên trên các card nội dung bên dưới */
+  z-index: 9999 !important; 
   text-align: left !important;
 }
 
-
-/* 2. ÁP DỤNG TRÊN TRANG THUẬT NGỮ (.search-form-vocab) */
+/* Trang Thuật Ngữ (.search-form-vocab) */
 .search-form-vocab {
-    display: flex !important;       /* Đưa input wrap và nút bấm nằm ngang hàng */
-    align-items: center !important;  /* Thẳng hàng trục dọc */
-    gap: 12px !important;            /* Khoảng cách 12px */
+    display: flex !important;       
+    align-items: center !important;  
+    gap: 12px !important;            
     width: 100% !important;
 }
 
 .search-wrap-vocab {
     position: relative !important;
-    flex: 1 !important;              /* Chiếm toàn bộ khoảng trống bên trái */
+    flex: 1 !important;              
 }
 
 .search-wrap-vocab input#search-input {
     width: 100% !important;
-    height: 44px !important;         /* Chiều cao cố định */
+    height: 44px !important;         
     padding: 0 15px !important;
     border: 1px solid #cbd5e1 !important;
     border-radius: 8px !important;
 }
 
 .search-btn-vocab {
-    height: 44px !important;         /* Chiều cao bằng khít với ô input */
+    height: 44px !important;         
     padding: 0 20px !important;
     border-radius: 8px !important;
     white-space: nowrap !important;
 }
 
-/* Hộp gợi ý trên trang Vocab (Rộng 100% bằng ô input) */
 .search-wrap-vocab #suggest-list.suggest-list {
     position: absolute !important;
     left: 0 !important;
@@ -302,7 +306,7 @@ nav ul li a.active {
     text-align: left !important;
 }
 
-/* 3. STYLE CHUNG CHO CÁC ITEM GỢI Ý (ÁP DỤNG CẢ 2 TRANG) */
+/* Item Gợi Ý Chung */
 .suggest-item {
   padding: 10px 14px !important;
   border-radius: 8px !important;
@@ -315,14 +319,17 @@ nav ul li a.active {
   transition: background 0.15s ease, color 0.15s ease !important;
 }
 
-/* HIỆU ỨNG HOVER HOẶC PHÍM MŨI TÊN (ĐÚNG YÊU CẦU MÀU CAM SỮA NHẠT) */
 .suggest-item:hover,
 .suggest-item.active {
-  background: #fff4e8 !important; /* Nền màu cam sữa nhạt dịu mắt */
-  color: #ff9800 !important;      /* Chữ đổi sang cam đậm thương hiệu */
+  background: #fff4e8 !important; 
+  color: #ff9800 !important;      
   font-weight: 600 !important;
 }
-/* NÚT CHAT BÊN DƯỚI GÓC PHẢI */
+
+
+/* ==========================================================================
+   6. NÚT CHAT TRỰC TUYẾN (FLOATING BUTTON)
+   ========================================================================== */
 .floating-chat-btn {
     position: fixed;
     bottom: 30px;
@@ -365,69 +372,33 @@ nav ul li a.active {
     fill: #fff;
 }
 
-/* Responsive cơ bản cho Mobile */
-@media (max-width: 768px) {
-    .container-cards {
-        flex-direction: column;
-        margin-top: -40px;
-    }
-    .card-box {
-        width: 100%;
-    }
-    .banner-content h1 {
-        font-size: 28px;
-    }
-    header {
-        flex-direction: column;
-        height: auto;
-        padding: 15px;
-        gap: 15px;
-    }
-}
-```css
-/* ==========================
-   THÔNG BÁO LỖI
-========================== */
+
+/* ==========================================================================
+   7. CHUNG (THÔNG BÁO LỖI, USERNAME, NÚT LOGOUT)
+   ========================================================================== */
 .error{
     background: #fff4e8;
     color: #e26d00;
-
     padding: 15px 20px;
-
     border-radius: 12px;
-
     margin-bottom: 20px;
-
     font-weight: 600;
-
     border-left: 5px solid #ff9800;
-
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* ==========================
-   HIỂN THỊ TÊN NGƯỜI DÙNG
-========================== */
 .username{
     color: #e16621;
     font-weight: bold;
 }
 
-/* ==========================
-   NÚT ĐĂNG XUẤT
-========================== */
 .logout-btn{
     background: #e16621;
     color: white !important;
-
     padding: 10px 18px;
-
     border-radius: 10px;
-
     text-decoration: none;
-
     font-weight: 600;
-
     transition: 0.2s;
 }
 
@@ -435,23 +406,17 @@ nav ul li a.active {
     background: #c95316;
 }
 
-/* ==========================
-   THẺ TÀI KHOẢN
-========================== */
+
+/* ==========================================================================
+   8. GIAO DIỆN TÀI KHOẢN (ACCOUNT)
+   ========================================================================== */
 .account-card{
-
     width: 500px;
-
     margin: 60px auto;
-
     background: rgba(255,255,255,0.95);
-
     padding: 40px;
-
     border-radius: 20px;
-
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-
     text-align: center;
 }
 
@@ -465,161 +430,199 @@ nav ul li a.active {
     font-size: 18px;
 }
 
-/* ==========================
-   FORM LOGIN - REGISTER
-========================== */
 
+/* ==========================================================================
+   9. GIAO DIỆN ĐĂNG NHẬP & ĐĂNG KÝ (AUTH FORMS)
+   ========================================================================== */
 .form-box{
-
     width: 430px;
-
     margin: auto;
-
     background: rgba(255,255,255,0.95);
-
     padding: 40px;
-
     border-radius: 20px;
-
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .form-box h1{
-
     text-align: center;
-
     color: #e16621;
-
     margin-bottom: 30px;
 }
 
 .form-box input{
-
     width: 100%;
-
     height: 50px;
-
     margin-bottom: 20px;
-
     padding: 0 15px;
-
     border: 1px solid #ddd;
-
     border-radius: 10px;
-
     outline: none;
-
     font-size: 16px;
 }
 
 .form-box input:focus{
-
     border-color: #e16621;
 }
 
 .form-box button{
-
     width: 100%;
-
     height: 50px;
-
     border: none;
-
     background: #e16621;
-
     color: white;
-
     border-radius: 10px;
-
     font-size: 16px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: .2s;
 }
 
 .form-box button:hover{
-
     background: #c95316;
 }
 
 .form-link{
-
     text-align: center;
-
     margin-top: 20px;
 }
 
 .form-link a{
-
     color: #e16621;
-
     text-decoration: none;
-
     font-weight: bold;
 }
-/* ==========================
-   Ô nhập mật khẩu
-========================== */
 
+/* Ô mật khẩu + icon mắt */
 .password-box{
-
     position: relative;
-
 }
 
 .password-box input{
-
     width: 100%;
 }
 
 .eye-btn{
-
     position: absolute;
-
     right: 15px;
-
     top: 50%;
-
     transform: translateY(-50%);
-
     cursor: pointer;
-
-    font-size: 18px;
-
-    user-select: none;
-}
-/* ==========================
-   Ô mật khẩu + icon mắt
-========================== */
-
-.password-box{
-
-    position: relative;
-
-}
-
-.password-box input{
-
-    width: 100%;
-}
-
-.eye-btn{
-
-    position: absolute;
-
-    right: 15px;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    cursor: pointer;
-
     font-size: 20px;
-
     user-select: none;
+}
 
+
+/* ==========================================================
+   GIAO DIỆN CHIA 3 CỘT (CARD) HỌC TẬP CHUẨN PREMIUM
+   ========================================================== */
+
+/* Khung chứa bên ngoài bao bọc 3 cột */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Chia đều thành 3 cột bằng nhau */
+    gap: 24px;                            /* Khoảng cách giữa các cột */
+    margin-top: 25px;
+    width: 100%;
+    align-items: stretch;                 /* Chiều cao các card bằng nhau */
+}
+
+/* Phần chữ giới thiệu ngắn (nếu có) vắt ngang qua cả 3 cột */
+.intro-text {
+    grid-column: 1 / -1;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding: 12px 16px;
+    background: #f8fa9b;
+    border-left: 4px solid #e16621;
+    border-radius: 4px;
+}
+
+/* Định dạng từng thẻ Card */
+.study-card {
+    background: #ffffff;
+    border: 1px solid rgba(225, 102, 33, 0.12); /* Viền cam siêu nhạt tinh tế */
+    border-radius: 16px;                         /* Bo tròn góc hiện đại */
+    padding: 24px 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04); /* Đổ bóng mịn không tì vết */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hiệu ứng nổi bật, đổi màu viền khi di chuột vào (Hover) */
+.study-card:hover {
+    transform: translateY(-6px);                 /* Nhấc card lên nhẹ nhàng */
+    box-shadow: 0 16px 32px rgba(225, 102, 33, 0.1); /* Đổ bóng cam nhẹ */
+    border-color: rgba(225, 102, 33, 0.4);       /* Viền cam rõ hơn */
+}
+
+/* Thanh tiêu đề phía trên của Card (Chứa icon + Chữ) */
+.card-header-study {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed #eee;              /* Nét đứt phân cách sang trọng */
+}
+
+/* Hộp tròn nhỏ chứa Icon ứng với từng mục */
+.icon-box {
+    width: 42px;
+    height: 42px;
+    background: #fff4e8;                         /* Nền cam sữa pastel */
+    border-radius: 50%;                          /* Bo tròn tuyệt đối */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* SỬA ĐỔI: Ép chữ tiêu đề và Icon nằm cùng một dòng, căn giữa hoàn hảo */
+.card-header-study h2 {
+    display: flex;
+    align-items: center;      /* Căn giữa dọc icon và text */
+    font-size: 17px;          /* Cỡ chữ tiêu đề của bạn */
+    color: #222;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+/* THÊM MỚI: Tự động scale cỡ icon chuẩn xác theo cỡ chữ của h2 */
+.card-icon {
+    font-size: inherit;       /* Kế thừa 100% kích thước chữ từ h2 */
+    line-height: 1;           /* Bóp nghẹt khoảng trống thừa của emoji */
+    display: inline-block;
+}
+
+/* Khung ruột chứa nội dung chữ chi tiết bên trong Card */
+.card-body-study {
+    font-size: 15px;
+    color: #4a4a4a;
+    line-height: 1.7;
+    word-break: break-word;
+}
+
+/* Làm nổi bật các từ khóa/tiêu đề con tự động */
+.card-body-study strong {
+    color: #e16621;         /* Chuyển các chữ in đậm thành màu cam thương hiệu */
+    font-weight: 600;
+}
+
+/* 📱 Đảm bảo giao diện co giãn hoàn hảo trên các màn hình nhỏ (Responsive) */
+@media (max-width: 1200px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr); /* Màn hình vừa: Chia thành 2 cột */
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;           /* Màn hình điện thoại: Xếp thành 1 hàng dọc */
+        gap: 16px;
+    }
 }
