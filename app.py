@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, session
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+import re  # THÊM THƯ VIỆN REGEX ĐỂ XỬ LÝ CHUỖI VĂN BẢN
 
 app = Flask(__name__)
 
@@ -133,6 +134,29 @@ df_hoc.columns = df_hoc.columns.str.strip()
 ds_thuat_ngu = df["Thuật ngữ"].dropna().tolist()
 
 
+# ==========================================================
+# HÀM BỔ TRỢ: TỰ ĐỘNG FORMAT VĂN BẢN SANG HTML (MỚI THÊM)
+# ==========================================================
+def xu_ly_format_html(text_goc):
+    if not text_goc or pd.isna(text_goc):
+        return ""
+    
+    text = str(text_goc).strip()
+    
+    # 1. Tự động nhận diện đề mục lớn chuyển thành thẻ h3
+    cac_muc_chinh = ["Nội dung học", "Lưu ý quan trọng", "Cách học hiệu quả"]
+    for muc in cac_muc_chinh:
+        text = text.replace(muc, f"<h3>💡 {muc}</h3>")
+        
+    # 2. Tự động in đậm các từ khóa nhỏ đứng trước dấu hai chấm ở đầu dòng
+    text = re.sub(r'(^|\n)([^:\n]+:)', r'\1<strong>\2</strong>', text)
+    
+    # 3. Ép xuống dòng bằng cách đổi \n thành <br>
+    text = text.replace("\n", "<br>")
+    
+    return text
+
+
 # ==========================
 # ĐĂNG KÝ
 # ==========================
@@ -257,183 +281,4 @@ def tim_kiem():
     row_vocab = df[
         df["Thuật ngữ"]
         .str.lower()
-        .str.strip() == word
-    ]
-
-    if not row_vocab.empty:
-
-        title = row_vocab.iloc[0]["Thuật ngữ"]
-
-        meaning = row_vocab.iloc[0]["định nghĩa"]
-
-        return render_template(
-            "vocab.html",
-            title=title,
-            meaning=meaning,
-            ds_thuat_ngu=ds_thuat_ngu
-        )
-
-    row_study = df_hoc[
-        df_hoc["Nội dung học"]
-        .str.lower()
-        .str.strip() == word
-    ]
-
-    if not row_study.empty:
-
-        tieu_de = row_study.iloc[0]["Nội dung học"]
-
-        ketqua = row_study.iloc[0]["Phương pháp học"]
-
-        return render_template(
-            "study.html",
-            tieu_de=tieu_de,
-            ketqua=ketqua
-        )
-
-    return render_template(
-        "vocab.html",
-        title="Không tìm thấy kết quả",
-        meaning=f"Từ khóa '{request.form['keyword']}' không có trong hệ thống.",
-        ds_thuat_ngu=ds_thuat_ngu
-    )
-
-
-# ==========================
-# BẤM THUẬT NGỮ
-# ==========================
-@app.route("/thuatngu/<tu>")
-def thuat_ngu(tu):
-
-    if "username" not in session:
-        return redirect("/login")
-
-    row = df[
-        df["Thuật ngữ"]
-        .str.lower()
         .str.strip()
-        == tu.lower().strip()
-    ]
-
-    if not row.empty:
-
-        title = row.iloc[0]["Thuật ngữ"]
-
-        meaning = row.iloc[0]["định nghĩa"]
-
-    else:
-
-        title = "Không tìm thấy"
-
-        meaning = "Thuật ngữ này chưa có trong hệ thống."
-
-    return render_template(
-        "vocab.html",
-        title=title,
-        meaning=meaning,
-        ds_thuat_ngu=ds_thuat_ngu
-    )
-
-
-# ==========================
-# GỢI Ý
-# ==========================
-@app.route("/suggest")
-def suggest():
-
-    q = request.args.get(
-        "q",
-        ""
-    ).strip().lower()
-
-    if not q:
-        return jsonify([])
-
-    ds_hoc_tap = df_hoc[
-        "Nội dung học"
-    ].dropna().tolist()
-
-    ds_tong_hop = list(
-        set(ds_thuat_ngu + ds_hoc_tap)
-    )
-
-    starts = [
-        t for t in ds_tong_hop
-        if t and str(t).lower().startswith(q)
-    ]
-
-    contains = [
-        t for t in ds_tong_hop
-        if t and q in str(t).lower()
-        and not str(t).lower().startswith(q)
-    ]
-
-    return jsonify(
-        (starts + contains)[:10]
-    )
-
-
-# ==========================
-# TRANG HỌC TẬP
-# ==========================
-@app.route("/study")
-def study():
-
-    if "username" not in session:
-        return redirect("/login")
-
-    return render_template(
-        "study.html",
-        tieu_de="Hỗ trợ học tập",
-        ketqua="Hãy chọn một nội dung ở bên trái."
-    )
-
-
-# ==========================
-# CHỌN NỘI DUNG HỌC
-# ==========================
-@app.route("/hoc/<mon>")
-def hoc(mon):
-
-    if "username" not in session:
-        return redirect("/login")
-
-    ket_qua = df_hoc[
-        df_hoc["Nội dung học"]
-        .str.lower()
-        .str.strip()
-        == mon.lower().strip()
-    ]
-
-    if not ket_qua.empty:
-
-        noidung = ket_qua.iloc[0]["Phương pháp học"]
-
-    else:
-
-        noidung = "Chưa có dữ liệu."
-
-    return render_template(
-        "study.html",
-        tieu_de=mon,
-        ketqua=noidung
-    )
-
-# ==========================
-# TRANG TÀI KHOẢN
-# ==========================
-@app.route("/account")
-def account():
-
-    if "username" not in session:
-        return redirect("/login")
-
-    return render_template(
-        "account.html",
-        username=session["username"]
-    )
-# ==========================
-# CHẠY SERVER
-# ==========================
-if __name__ == "__main__":
-    app.run(debug=True)
