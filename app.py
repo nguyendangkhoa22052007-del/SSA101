@@ -3,7 +3,6 @@ import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import re  # THÊM THƯ VIỆN REGEX ĐỂ XỬ LÝ CHUỖI VĂN BẢN
-# SỬA ĐỔI: Xử lý format dấu xuống dòng và từ khóa trước khi render sang study.html
 from markupsafe import Markup
 
 app = Flask(__name__)
@@ -54,7 +53,8 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) # Thời gian bình luận
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)     # Bình luận thuộc bài viết nào
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)     # Ai là người bình luận
-# Đảm bảo tạo bảng (Giữ nguyên hoặc đưa xuống dưới cùng trước app.run)
+
+# Đảm bảo tạo bảng
 with app.app_context():
     db.create_all()
 
@@ -97,7 +97,7 @@ def forum():
         posts=all_posts,
         username=session["username"]
     )
-# (Giữ nguyên đoạn db.create_all() phía dưới của bạn để Flask tự tạo bảng mới này vào database.db)
+
 # ==========================
 # ROUTE XỬ LÝ BÌNH LUẬN
 # ==========================
@@ -116,6 +116,7 @@ def add_comment(post_id):
         db.session.commit()
         
     return redirect("/forum")
+
 # ==========================
 # ĐỌC FILE EXCEL
 # ==========================
@@ -137,7 +138,7 @@ ds_thuat_ngu = df["Thuật ngữ"].dropna().tolist()
 
 
 # ==========================================================
-# HÀM BỔ TRỢ: TỰ ĐỘNG FORMAT VĂN BẢN SANG HTML (MỚI THÊM)
+# HÀM BỔ TRỢ: TỰ ĐỘNG FORMAT VĂN BẢN THÀNH 3 CARDS
 # ==========================================================
 def xu_ly_format_html(text_goc):
     if not text_goc or pd.isna(text_goc):
@@ -145,18 +146,64 @@ def xu_ly_format_html(text_goc):
     
     text = str(text_goc).strip()
     
-    # 1. Tự động nhận diện đề mục lớn chuyển thành thẻ h3
-    cac_muc_chinh = ["Nội dung học", "Lưu ý quan trọng", "Cách học hiệu quả"]
-    for muc in cac_muc_chinh:
-        text = text.replace(muc, f"<h3>💡 {muc}</h3>")
+    # 1. Tự động dọn dẹp thẻ HTML cũ (nếu có trong Excel) để tránh lỗi lồng thẻ
+    text = re.sub(r'(?i)<h3>\s*💡?\s*', '', text)
+    text = re.sub(r'💡\s*', '', text)
+    text = text.replace('</h3>', '')
+    text = text.replace('<strong>', '').replace('</strong>', '')
+    text = text.replace('\n', '<br>')
+    
+    # 2. In đậm tự động các từ khóa đứng trước dấu hai chấm (VD: "Deadline:")
+    text = re.sub(r'(^|<br>)\s*([^:<]+:)', r'\1<strong>\2</strong>', text)
+    
+    # 3. Sử dụng Regex để tự động cắt văn bản tại 3 tiêu đề mấu chốt
+    parts = re.split(r'(?i)(Nội dung học(?: tập)?|Lưu ý quan trọng|Cách học hiệu quả)', text)
+    
+    # Nếu không có từ khóa nào (môn học chưa có đủ 3 phần), trả về nguyên trạng
+    if len(parts) == 1:
+        return Markup(text)
         
-    # 2. Tự động in đậm các từ khóa nhỏ đứng trước dấu hai chấm ở đầu dòng
-    text = re.sub(r'(^|\n)([^:\n]+:)', r'\1<strong>\2</strong>', text)
+    final_html = '<div class="cards-container">'
     
-    # 3. Ép xuống dòng bằng cách đổi \n thành <br>
-    text = text.replace("\n", "<br>")
+    # Xử lý câu mở bài (nằm trên cùng trước khi vào 3 mục chính)
+    intro = parts[0].strip()
+    if intro and intro != '<br>':
+        intro = re.sub(r'^(<br>)+|(<br>)+$', '', intro) # Cắt khoảng trắng thừa
+        final_html += f'<div class="intro-text">{intro}</div>'
+        
+    # Từ điển gán Icon cho từng Card
+    icons = {
+        'nội dung học': '📚',
+        'nội dung học tập': '📚',
+        'lưu ý quan trọng': '⚠️',
+        'cách học hiệu quả': '🚀'
+    }
     
-    return text
+    # Lắp ráp 3 Card HTML
+    for i in range(1, len(parts), 2):
+        keyword = parts[i].strip()
+        content = parts[i+1].strip()
+        content = re.sub(r'^(<br>)+|(<br>)+$', '', content) # Cắt <br> thừa ở 2 đầu nội dung
+        
+        icon = icons.get(keyword.lower(), '📌')
+        
+        # CẢI TIẾN: Đưa icon vào thẳng trong h2 để thừa hưởng font-size gốc và ép cùng dòng
+        final_html += f'''
+        <div class="study-card">
+            <div class="card-header-study">
+                <h2>
+                    <span class="card-icon" style="margin-right: 10px; vertical-align: middle;">{icon}</span><span style="vertical-align: middle;">{keyword}</span>
+                </h2>
+            </div>
+            <div class="card-body-study">
+                {content}
+            </div>
+        </div>
+        '''
+        
+    final_html += '</div>'
+    
+    return Markup(final_html)
 
 
 # ==========================
@@ -311,22 +358,13 @@ def tim_kiem():
 
         ketqua = row_study.iloc[0]["Phương pháp học"]
         
-def xu_ly_format_html(text_goc):
-    if not text_goc or pd.isna(text_goc):
-        return ""
-    
-    text = str(text_goc).strip()
-    
-    # BƯỚC 1: Vì trong Excel của bạn ĐÃ CÓ SẴN các thẻ <br>, <h3>, <strong>...
-    # Chúng ta TUYỆT ĐỐI KHÔNG dùng replace hay re.sub để chèn thêm thẻ vào nữa, tránh bị lỗi cú pháp lồng nhau.
+        ketqua = xu_ly_format_html(ketqua)
 
-    # BƯỚC 2: Kiểm tra xem chuỗi có chứa các ký tự xuống dòng thực tế (\n) không, nếu có thì mới đổi thành <br>
-    # (Đề phòng trường hợp các ô khác trong Excel bạn gõ phím Alt + Enter xuống dòng thuần túy)
-    if "\n" in text:
-        text = text.replace("\n", "<br>")
-        
-    # BƯỚC 3: Bọc chuỗi bằng Markup để báo cho Flask/Jinja2 biết đây là chuỗi HTML hợp lệ, sạch sẽ
-    return Markup(text)
+        return render_template(
+            "study.html",
+            tieu_de=tieu_de,
+            ketqua=ketqua
+        )
 
     return render_template(
         "vocab.html",
@@ -446,7 +484,6 @@ def hoc(mon):
 
         noidung = ket_qua.iloc[0]["Phương pháp học"]
         
-        # SỬA ĐỔI: Chạy qua hàm xử lý format để bẻ dòng và in đậm từ khóa tự động
         noidung = xu_ly_format_html(noidung)
 
     else:
@@ -458,6 +495,7 @@ def hoc(mon):
         tieu_de=mon,
         ketqua=noidung
     )
+
 
 # ==========================
 # TRANG TÀI KHOẢN
@@ -472,6 +510,8 @@ def account():
         "account.html",
         username=session["username"]
     )
+
+
 # ==========================
 # CHẠY SERVER
 # ==========================
