@@ -3,6 +3,8 @@ import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import re  # THÊM THƯ VIỆN REGEX ĐỂ XỬ LÝ CHUỖI VĂN BẢN
+# SỬA ĐỔI: Xử lý format dấu xuống dòng và từ khóa trước khi render sang study.html
+from markupsafe import Markup
 
 app = Flask(__name__)
 
@@ -309,14 +311,22 @@ def tim_kiem():
 
         ketqua = row_study.iloc[0]["Phương pháp học"]
         
-        # SỬA ĐỔI: Xử lý format dấu xuống dòng và từ khóa trước khi render sang study.html
-        ketqua = xu_ly_format_html(ketqua)
+def xu_ly_format_html(text_goc):
+    if not text_goc or pd.isna(text_goc):
+        return ""
+    
+    text = str(text_goc).strip()
+    
+    # BƯỚC 1: Vì trong Excel của bạn ĐÃ CÓ SẴN các thẻ <br>, <h3>, <strong>...
+    # Chúng ta TUYỆT ĐỐI KHÔNG dùng replace hay re.sub để chèn thêm thẻ vào nữa, tránh bị lỗi cú pháp lồng nhau.
 
-        return render_template(
-            "study.html",
-            tieu_de=tieu_de,
-            ketqua=ketqua
-        )
+    # BƯỚC 2: Kiểm tra xem chuỗi có chứa các ký tự xuống dòng thực tế (\n) không, nếu có thì mới đổi thành <br>
+    # (Đề phòng trường hợp các ô khác trong Excel bạn gõ phím Alt + Enter xuống dòng thuần túy)
+    if "\n" in text:
+        text = text.replace("\n", "<br>")
+        
+    # BƯỚC 3: Bọc chuỗi bằng Markup để báo cho Flask/Jinja2 biết đây là chuỗi HTML hợp lệ, sạch sẽ
+    return Markup(text)
 
     return render_template(
         "vocab.html",
