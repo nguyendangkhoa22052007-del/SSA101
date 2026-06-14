@@ -281,4 +281,189 @@ def tim_kiem():
     row_vocab = df[
         df["Thuật ngữ"]
         .str.lower()
+        .str.strip() == word
+    ]
+
+    if not row_vocab.empty:
+
+        title = row_vocab.iloc[0]["Thuật ngữ"]
+
+        meaning = row_vocab.iloc[0]["định nghĩa"]
+
+        return render_template(
+            "vocab.html",
+            title=title,
+            meaning=meaning,
+            ds_thuat_ngu=ds_thuat_ngu
+        )
+
+    row_study = df_hoc[
+        df_hoc["Nội dung học"]
+        .str.lower()
+        .str.strip() == word
+    ]
+
+    if not row_study.empty:
+
+        tieu_de = row_study.iloc[0]["Nội dung học"]
+
+        ketqua = row_study.iloc[0]["Phương pháp học"]
+        
+        # SỬA ĐỔI: Xử lý format dấu xuống dòng và từ khóa trước khi render sang study.html
+        ketqua = xu_ly_format_html(ketqua)
+
+        return render_template(
+            "study.html",
+            tieu_de=tieu_de,
+            ketqua=ketqua
+        )
+
+    return render_template(
+        "vocab.html",
+        title="Không tìm thấy kết quả",
+        meaning=f"Từ khóa '{request.form['keyword']}' không có trong hệ thống.",
+        ds_thuat_ngu=ds_thuat_ngu
+    )
+
+
+# ==========================
+# BẤM THUẬT NGỮ
+# ==========================
+@app.route("/thuatngu/<tu>")
+def thuat_ngu(tu):
+
+    if "username" not in session:
+        return redirect("/login")
+
+    row = df[
+        df["Thuật ngữ"]
+        .str.lower()
         .str.strip()
+        == tu.lower().strip()
+    ]
+
+    if not row.empty:
+
+        title = row.iloc[0]["Thuật ngữ"]
+
+        meaning = row.iloc[0]["định nghĩa"]
+
+    else:
+
+        title = "Không tìm thấy"
+
+        meaning = "Thuật ngữ này chưa có trong hệ thống."
+
+    return render_template(
+        "vocab.html",
+        title=title,
+        meaning=meaning,
+        ds_thuat_ngu=ds_thuat_ngu
+    )
+
+
+# ==========================
+# GỢI Ý
+# ==========================
+@app.route("/suggest")
+def suggest():
+
+    q = request.args.get(
+        "q",
+        ""
+    ).strip().lower()
+
+    if not q:
+        return jsonify([])
+
+    ds_hoc_tap = df_hoc[
+        "Nội dung học"
+    ].dropna().tolist()
+
+    ds_tong_hop = list(
+        set(ds_thuat_ngu + ds_hoc_tap)
+    )
+
+    starts = [
+        t for t in ds_tong_hop
+        if t and str(t).lower().startswith(q)
+    ]
+
+    contains = [
+        t for t in ds_tong_hop
+        if t and q in str(t).lower()
+        and not str(t).lower().startswith(q)
+    ]
+
+    return jsonify(
+        (starts + contains)[:10]
+    )
+
+
+# ==========================
+# TRANG HỌC TẬP
+# ==========================
+@app.route("/study")
+def study():
+
+    if "username" not in session:
+        return redirect("/login")
+
+    return render_template(
+        "study.html",
+        tieu_de="Hỗ trợ học tập",
+        ketqua="Hãy chọn một nội dung ở bên trái."
+    )
+
+
+# ==========================
+# CHỌN NỘI DUNG HỌC
+# ==========================
+@app.route("/hoc/<mon>")
+def hoc(mon):
+
+    if "username" not in session:
+        return redirect("/login")
+
+    ket_qua = df_hoc[
+        df_hoc["Nội dung học"]
+        .str.lower()
+        .str.strip()
+        == mon.lower().strip()
+    ]
+
+    if not ket_qua.empty:
+
+        noidung = ket_qua.iloc[0]["Phương pháp học"]
+        
+        # SỬA ĐỔI: Chạy qua hàm xử lý format để bẻ dòng và in đậm từ khóa tự động
+        noidung = xu_ly_format_html(noidung)
+
+    else:
+
+        noidung = "Chưa có dữ liệu."
+
+    return render_template(
+        "study.html",
+        tieu_de=mon,
+        ketqua=noidung
+    )
+
+# ==========================
+# TRANG TÀI KHOẢN
+# ==========================
+@app.route("/account")
+def account():
+
+    if "username" not in session:
+        return redirect("/login")
+
+    return render_template(
+        "account.html",
+        username=session["username"]
+    )
+# ==========================
+# CHẠY SERVER
+# ==========================
+if __name__ == "__main__":
+    app.run(debug=True)
