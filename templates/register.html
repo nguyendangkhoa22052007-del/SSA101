@@ -65,7 +65,8 @@ h1{
     margin-bottom:30px;
 }
 
-input{
+input,
+select{
 
     width:100%;
 
@@ -158,31 +159,88 @@ a{
 
     <form method="POST">
 
-        <input
+    <input
         type="text"
         name="username"
         placeholder="Tên tài khoản"
         required>
 
-        <div class="password-box">
     <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Mật khẩu"
-        required
-    >
+        type="email"
+        name="email"
+        placeholder="Email"
+        required>
 
-    <span class="eye-btn" onclick="togglePassword()">
-        👁
-    </span>
-</div>
+    <!-- Mật khẩu -->
+    <div class="password-box">
 
-        <button type="submit">
-            Đăng ký
-        </button>
+        <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Mật khẩu"
+            required>
 
-    </form>
+        <span class="eye-btn" onclick="togglePassword()">
+            👁
+        </span>
+
+    </div>
+
+    <!-- Xác nhận mật khẩu -->
+    <div class="password-box">
+
+        <input
+            type="password"
+            name="confirm_password"
+            id="confirm_password"
+            placeholder="Xác nhận mật khẩu"
+            required>
+
+        <span class="eye-btn" onclick="toggleConfirmPassword()">
+            👁
+        </span>
+
+    </div>
+
+    <!-- Câu hỏi bảo mật -->
+    <select name="security_question" required>
+
+        <option value="">-- Chọn câu hỏi bảo mật --</option>
+
+        <option value="Món ăn yêu thích của bạn là gì?">
+            Món ăn yêu thích của bạn là gì?
+        </option>
+
+        <option value="Tên giáo viên chủ nhiệm lớp 12 của bạn là gì?">
+            Tên giáo viên chủ nhiệm lớp 12 của bạn là gì?
+        </option>
+
+        <option value="Tên thú cưng đầu tiên của bạn là gì?">
+            Tên thú cưng đầu tiên của bạn là gì?
+        </option>
+
+        <option value="Tên người bạn thân nhất của bạn là gì?">
+            Tên người bạn thân nhất của bạn là gì?
+        </option>
+
+        <option value="Địa điểm du lịch yêu thích của bạn là gì?">
+            Địa điểm du lịch yêu thích của bạn là gì?
+        </option>
+
+    </select>
+
+    <input
+        type="text"
+        name="security_answer"
+        placeholder="Câu trả lời bảo mật"
+        required>
+
+    <button type="submit">
+        Đăng ký
+    </button>
+
+</form>
 
     <p>
 
@@ -213,6 +271,23 @@ function togglePassword(){
         x.type = "password";
 
     }
+}
+function toggleConfirmPassword(){
+
+    let x = document.getElementById("confirm_password");
+
+    if(x.type=="password"){
+
+        x.type="text";
+
+    }
+
+    else{
+
+        x.type="password";
+
+    }
+
 }
 </script>
 </body>
