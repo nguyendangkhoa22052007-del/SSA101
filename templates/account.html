@@ -6,7 +6,6 @@
 <title>Tài khoản - FPT Support</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -19,7 +18,6 @@ body{
     background:url("/static/background.jpg");
     background-size:cover;
     background-position:center;
-
     display:flex;
     justify-content:center;
     align-items:center;
@@ -45,70 +43,79 @@ body::before{
 }
 
 .container{
-
     position:relative;
     z-index:2;
-
     width:450px;
-
     background:rgba(255,255,255,0.95);
-
     padding:45px;
-
     border-radius:20px;
-
     box-shadow:0 0 20px rgba(0,0,0,0.2);
-
 }
 
 h1{
-
     color:#f57c00;
-
     text-align:center;
-
     margin-bottom:35px;
 }
 
 .info{
-
     margin-bottom:30px;
 }
 
 .label{
-
     color:gray;
-
     margin-bottom:10px;
-
     font-size:15px;
 }
 
 .value{
-
     font-size:20px;
+    font-weight:bold;
+}
 
+input{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:10px;
+    background:#f5f5f5;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#f57c00;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#df6b00;
+}
+
+.section-title{
+    margin-top:30px;
+    margin-bottom:15px;
+    font-size:22px;
+    color:#f57c00;
     font-weight:bold;
 }
 
 .btn{
-
     display:block;
-
     text-decoration:none;
-
     text-align:center;
-
     padding:15px;
-
     border-radius:10px;
-
     margin-top:20px;
-
     color:white;
-
     font-size:18px;
-
     transition:0.3s;
 }
 
@@ -128,6 +135,36 @@ h1{
     background:#b71c1c;
 }
 
+/* THÊM CSS ĐỂ ĐỊNH VỊ CON MẮT CHO TRANG ACCOUNT */
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    margin-bottom: 0; /* Reset margin để con mắt căn giữa chuẩn */
+}
+
+.password-wrapper {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.eye-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #777;
+    user-select: none;
+    z-index: 5;
+}
+
+.eye-btn:hover {
+    color: #f57c00;
+}
 </style>
 </head>
 
@@ -140,44 +177,87 @@ h1{
 <div class="container">
 
     <h1>👤 TÀI KHOẢN</h1>
+    
+    {% if error %}
+    <div style="color:red; text-align:center; margin-bottom:15px;">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div style="color:green; text-align:center; margin-bottom:15px;">
+        {{ success }}
+    </div>
+    {% endif %}
 
     <div class="info">
-
-        <div class="label">
-            Tên tài khoản
+        <div class="label">Tên tài khoản</div>
+        <div class="value">{{ username }}</div>
+        
+        <div class="info" style="margin-top: 30px; margin-bottom: 0;">
+            <div class="label">Email</div>
+            <div class="value">{{ email }}</div>
         </div>
-
-        <div class="value">
-            {{ username }}
-        </div>
-
     </div>
 
     <div class="info">
-
-        <div class="label">
-            Mật khẩu
-        </div>
-
+        <div class="label">Mật khẩu</div>
         <div class="value">
             ********
-        </div>
+            <hr style="margin-top: 15px;">
 
+            <div class="section-title">Đổi mật khẩu</div>
+
+            <form method="POST" action="/change-password">
+                <div class="password-wrapper">
+                    <div class="password-box">
+                        <input type="password" name="old_password" placeholder="Mật khẩu cũ" required>
+                        <span class="eye-btn" onclick="togglePassword(this)">👁️</span>
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-top: -5px; margin-bottom: 15px;">
+                    <a href="/forgot-password" style="font-size: 14px; font-weight: normal; color: #666; text-decoration: none; transition: 0.2s;" onmouseover="this.style.color='#f57c00'; this.style.textDecoration='underline'" onmouseout="this.style.color='#666'; this.style.textDecoration='none'">Quên mật khẩu?</a>
+                </div>
+
+                <div class="password-wrapper">
+                    <div class="password-box">
+                        <input type="password" name="new_password" placeholder="Mật khẩu mới" required>
+                        <span class="eye-btn" onclick="togglePassword(this)">👁️</span>
+                    </div>
+                </div>
+
+                <div class="password-wrapper">
+                    <div class="password-box">
+                        <input type="password" name="confirm_password" placeholder="Xác nhận mật khẩu mới" required>
+                        <span class="eye-btn" onclick="togglePassword(this)">👁️</span>
+                    </div>
+                </div>
+
+                <button type="submit">Đổi mật khẩu</button>
+            </form>
+        </div>
     </div>
 
-    <a href="/" class="btn home">
-
-        Về trang chủ
-
-    </a>
-
-    <a href="/logout" class="btn logout">
-
-        Đăng xuất
-
-    </a>
+    <a href="/" class="btn home">Về trang chủ</a>
+    <a href="/logout" class="btn logout">Đăng xuất</a>
 
 </div>
+
+<script>
+function togglePassword(btn) {
+    // Tìm ô input nằm ngay trước thẻ span con mắt đang được click
+    let input = btn.previousElementSibling;
+    
+    if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈"; // Đổi thành khỉ che mắt khi hiện pass
+    } else {
+        input.type = "password";
+        btn.textContent = "👁️"; // Đổi lại thành mắt khi ẩn pass
+    }
+}
+</script>
 
 </body>
 </html>
