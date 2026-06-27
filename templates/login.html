@@ -6,7 +6,6 @@
 <title>Đăng nhập - FPT Support</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -46,17 +45,11 @@ body::before{
 .container{
     position:relative;
     z-index:2;
-
     width:400px;
-
     background:rgba(255,255,255,0.95);
-
     padding:40px;
-
     border-radius:20px;
-
     box-shadow:0 0 20px rgba(0,0,0,0.2);
-
     text-align:center;
 }
 
@@ -66,40 +59,24 @@ h1{
 }
 
 input{
-
     width:100%;
-
     padding:15px;
-
     margin-bottom:20px;
-
     border:none;
-
     background:#f4f4f4;
-
     border-radius:10px;
-
     font-size:16px;
 }
 
 button{
-
     width:100%;
-
     padding:15px;
-
     border:none;
-
     border-radius:10px;
-
     background:#f57c00;
-
     color:white;
-
     font-size:18px;
-
     cursor:pointer;
-
     transition:0.3s;
 }
 
@@ -116,9 +93,10 @@ a{
     color:#f57c00;
     font-weight:bold;
 }
+
 .password-box{
     position:relative;
-    margin-bottom:20px;
+    margin-bottom:10px; 
 }
 
 .password-box input{
@@ -140,8 +118,37 @@ a{
 .eye-btn:hover{
     color:#f57c00;
 }
-</style>
 
+.forgot-password-link {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-password-link a {
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+    transition: 0.2s;
+}
+
+.forgot-password-link a:hover {
+    color: #f57c00;
+    text-decoration: underline;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Thêm định dạng thông báo thành công khi đổi pass xong quay lại */
+.success {
+    color: green;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -151,76 +158,67 @@ a{
 </div>
 
 <div class="container">
-
     <h1>ĐĂNG NHẬP</h1>
+    
     {% if error %}
-<div class="error">
-    {{ error }}
-</div>
-{% endif %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="success">
+        {{ success }}
+    </div>
+    {% endif %}
 
     <form method="POST">
-
         <input
         type="text"
         name="username"
         placeholder="Tên tài khoản"
         required>
-        <div class="password-box">
-
-    <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Mật khẩu"
-        required>
-
-    <span class="eye-btn" onclick="togglePassword()">
-        👁
-    </span>
-
-</div>
-
         
+        <div class="password-box">
+            <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Mật khẩu"
+            required>
+            <span class="eye-btn" id="eye-icon" onclick="togglePassword()">👁️</span>
+        </div>
+
+        <div class="forgot-password-link">
+            <a href="/forgot-password">Quên mật khẩu?</a>
+        </div>
 
         <button type="submit">
-
             Đăng nhập
-
         </button>
-
     </form>
 
     <p>
-
         Chưa có tài khoản?
-
-        <a href="/register">
-
-            Đăng ký
-
-        </a>
-
+        <a href="/register">Đăng ký</a>
     </p>
-
 </div>
+
 <script>
 function togglePassword(){
-
     let x = document.getElementById("password");
+    let icon = document.getElementById("eye-icon");
 
-    if(x.type == "password"){
-
+    if(x.type === "password"){
         x.type = "text";
-
+        icon.textContent = "🙈"; 
     }
-
     else{
-
         x.type = "password";
-
+        icon.textContent = "👁️"; 
     }
 }
 </script>
+
 </body>
 </html>
