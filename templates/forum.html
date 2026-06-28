@@ -21,9 +21,21 @@
             <a href="/logout" class="text-red-500">Đăng xuất</a>
         </div>
     </div>
-
+    <!-- MAIN CONTAINER -->
     <div class="max-w-4xl mx-auto mt-8 px-4 grid grid-cols-1 gap-6 pb-12">
-        
+        <!-- ========================================================== -->
+        <!-- ĐOẠN HIỂN THỊ CẢNH BÁO TỪ NGỮ VI PHẠM (DÂN VÀO ĐÂY) -->
+        <!-- ========================================================== -->
+        {% if error_forum %}
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-xl shadow-sm flex items-start gap-3 animate-pulse">
+            <span class="text-xl">❌</span>
+            <div class="text-sm font-medium text-red-700">
+                {{ error_forum }}
+            </div>
+        </div>
+        {% endif %}
+        <!-- ========================================================== -->
+        <!-- KHU VỰC ĐĂNG BÀI (GIỐNG BOX CREATE POST CỦA REDDIT) -->
         <div class="bg-white p-6 rounded-xl shadow border border-gray-200">
             <div class="flex items-center gap-2 mb-4">
                 <span class="text-xl">✍️</span>
@@ -71,7 +83,15 @@
                     <p class="text-gray-700 whitespace-pre-wrap text-base leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100 mb-4">
                         {{ post.content }}
                     </p>
-                    
+                    {% if post.author.username == username %}
+                    <div class="flex justify-end mb-4">
+                        <form action="/forum/delete/{{ post.id }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết thảo luận này không?');">
+                            <button type="submit" class="text-xs font-semibold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full transition-all border border-red-200 flex items-center gap-1">
+                                🗑️ Xóa bài viết
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
                     <div class="mt-4 pt-3 border-t border-gray-100 space-y-2">
                         <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                             💬 Bình luận ({{ post.comments|length }})

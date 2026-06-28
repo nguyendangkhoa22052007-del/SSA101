@@ -45,11 +45,21 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now) 
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)     
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)     
-
+# ==========================
+# BẢNG LƯU TỪ NGỮ VI PHẠM (MỚI)
+# ==========================
+class BadWord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    word = db.Column(db.String(100), unique=True, nullable=False) # Từ ngữ cần chặn
 # Khởi tạo database tự động
 with app.app_context():
     db.create_all()
-
+    # Tự động nạp từ cấm mẫu nếu bảng đang trống
+    if BadWord.query.count() == 0:
+        tu_mau = ["fuck", "shit", "bitch", "đcm", "dcm", "vcl", "clm", "chó", "ngu", "súc vật", "lồn", "cặc", "đầu buồi", "đm"]
+        for t in tu_mau:
+            db.session.add(BadWord(word=t))
+        db.session.commit()
 # ==========================
 # ĐỌC FILE EXCEL & CHUẨN HÓA DỮ LIỆU
 # ==========================
@@ -119,7 +129,25 @@ def xu_ly_format_html(text_goc):
         '''
     final_html += '</div>'
     return Markup(final_html)
-
+# ==========================================================
+# HÀM BỔ TRỢ: QUÉT VÀ TRÍCH XUẤT TỪ NGỮ VI PHẠM TỪ DATABASE
+# ==========================================================
+def kiem_tra_va_tim_tu_vi_pham(van_ban):
+    if not van_ban:
+        return []
+    
+    # Lấy toàn bộ từ cấm từ bảng BadWord trong Database ra
+    danh_sach_cam = [b.word for b in BadWord.query.all()]
+    
+    tu_vi_pham_found = set()
+    for tu in danh_sach_cam:
+        # Sử dụng r'\b' (Word Boundary) để chỉ bắt đúng từ đứng độc lập
+        # Giúp tránh việc chặn nhầm các bài viết tích cực mang tính "cảnh báo lừa đảo"
+        pattern = re.compile(r'\b' + re.escape(tu) + r'\b', re.IGNORECASE)
+        if pattern.search(van_ban):
+            tu_vi_pham_found.add(tu)
+            
+    return list(tu_vi_pham_found)
 # ==========================
 # AUTHENTICATION ROUTES
 # ==========================
@@ -329,6 +357,26 @@ def forum():
         content = request.form.get("content", "").strip()
 
         if title and content:
+            # 🚀 Tiến hành quét từ vi phạm trong cả tiêu đề và nội dung bài viết
+            tu_loi_title = kiem_tra_va_tim_tu_vi_pham(title)
+            tu_loi_content = kiem_tra_va_tim_tu_vi_pham(content)
+            
+            # Gom tất cả từ vi phạm lại thành danh sách duy nhất (loại bỏ từ trùng)
+            tat_ca_tu_vi_pham = list(set(tu_loi_title + tu_loi_content))
+
+            # Nếu phát hiện có từ ngữ xúc phạm -> Chặn đứng hành động đăng bài
+            if tat_ca_tu_vi_pham:
+                all_posts = Post.query.order_by(Post.date_posted.desc()).all()
+                chuoi_tu_loi = ", ".join([f'"{t}"' for t in tat_ca_tu_vi_pham])
+                
+                return render_template(
+                    "forum.html",
+                    posts=all_posts,
+                    username=session["username"],
+                    error_forum=f"⚠️ Bài viết bị chặn vì chứa từ ngữ xúc phạm/thô tục: {chuoi_tu_loi}. Vui lòng dùng từ ngữ văn minh hơn!"
+                )
+
+            # Nếu bài viết hoàn toàn sạch sẽ -> Tiến hành lưu vào Database bình thường
             new_post = Post(title=title, content=content, author=current_user)
             db.session.add(new_post)
             db.session.commit()
@@ -346,12 +394,40 @@ def add_comment(post_id):
     comment_content = request.form.get("comment_content", "").strip()
     
     if comment_content:
+        # 🚀 Kiểm tra từ vi phạm xuất hiện trong nội dung bình luận
+        tu_vi_pham_comment = kiem_tra_va_tim_tu_vi_pham(comment_content)
+        
+        # Nếu bình luận chứa từ thô tục -> Chặn lại và báo lỗi ra diễn đàn
+        if tu_vi_pham_comment:
+            all_posts = Post.query.order_by(Post.date_posted.desc()).all()
+            chuoi_tu_loi = ", ".join([f'"{t}"' for t in tu_vi_pham_comment])
+            return render_template(
+                "forum.html",
+                posts=all_posts,
+                username=session["username"],
+                error_forum=f"⚠️ Bình luận của bạn bị chặn vì chứa từ ngữ không phù hợp: {chuoi_tu_loi}."
+            )
+
         new_comment = Comment(content=comment_content, post_id=post_id, user_id=current_user.id)
         db.session.add(new_comment)
         db.session.commit()
         
     return redirect("/forum")
 
+@app.route("/forum/delete/<int:post_id>", methods=["POST"])
+def delete_post(post_id):
+    if "username" not in session:
+        return redirect("/login")
+        
+    # Lấy bài viết cần xóa trong database, nếu không tìm thấy sẽ trả về lỗi 404
+    post_to_delete = Post.query.get_or_404(post_id)
+    
+    # Kiểm tra bảo mật: Tên tài khoản đang đăng nhập phải trùng với tác giả bài viết
+    if post_to_delete.author.username == session["username"]:
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        
+    return redirect("/forum")
 # ==========================
 # QUẢN LÝ TÀI KHOẢN & ĐỔI MẬT KHẨU
 # ==========================
