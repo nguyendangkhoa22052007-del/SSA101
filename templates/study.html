@@ -1,202 +1,445 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Học tập - FPT Support</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPT Support - Học tập & Thuật ngữ</title>
+    <style>
+        /* ==========================================================================
+           1. RESET & VARIABLES (HỆ THỐNG MÀU SẮC PREMIUM)
+           ========================================================================== */
+        :root {
+            --primary: #ff6b00;         /* Màu cam FPT hiện đại */
+            --primary-hover: #e56000;
+            --primary-light: #fff4e8;   /* Màu cam sữa nhạt */
+            --text-main: #0f172a;       /* Chữ tối Slate 900 */
+            --text-muted: #64748b;      /* Chữ xám Slate 500 */
+            --bg-global: #f8fafc;       /* Nền xám xanh nhạt */
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
 
-<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        body {
+            background-color: var(--bg-global);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
 
-body{
-    background:#f4f7fb;
-    font-family:Arial,sans-serif;
-}
+        /* ==========================================================================
+           2. NAVIGATION BAR (THANH TRÊN)
+           ========================================================================== */
+        .navbar {
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 74px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-/* Thanh trên */
+        .logo-img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
 
-.navbar{
-    background:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 50px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.logo{
-    font-size:28px;
-    color:#f57c00;
-    font-weight:bold;
-}
+        .menu a {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
 
-.menu a{
-    text-decoration:none;
-    color:#333;
-    margin-left:30px;
-    font-weight:bold;
-    transition:0.3s;
-}
+        .menu a:hover, .menu a.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
 
-.menu a:hover{
-    color:#f57c00;
-}
+        .menu a.logout-btn {
+            color: #ef4444;
+        }
+        .menu a.logout-btn:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+/* ==========================================================================
+           3. MAIN LAYOUT (BỐ CỤC 2 CỘT HIỆN ĐẠI)
+           ========================================================================== */
+        .main-container {
+            width: 92%;
+            max-width: 1400px;
+            margin: 32px auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 32px;
+        }
 
-/* Phần chính */
+        .sidebar-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+        }
 
-.main{
-    width:90%;
-    margin:40px auto;
-    display:flex;
-}
+        .sidebar-card h2 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
 
-/* Menu trái */
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-.sidebar{
+        .sidebar-item {
+            display: block;
+            text-decoration: none;
+            color: var(--text-main);
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
 
-    width:25%;
+        .sidebar-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
 
-    background:white;
+        .sidebar-item.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
+        }
 
-    padding:25px;
+        .content-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: var(--shadow-md);
+            min-height: 600px;
+        }
 
-    border-radius:20px;
+        .content-card h1 {
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            font-weight: 800;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 16px;
+        }
 
-    box-shadow:0 0 15px rgba(0,0,0,0.1);
+        /* ==========================================================================
+           4. SEARCH BOX & AUTOCOMPLETE INTERFACE
+           ========================================================================== */
+        .search-form-vocab {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            position: relative;
+            width: 100%;
+        }
 
-}
+        .search-wrap-vocab {
+            position: relative;
+            flex: 1;
+        }
 
-.sidebar h2{
-    color:#f57c00;
-    margin-bottom:25px;
-}
+        .search-wrap-vocab input {
+width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            font-size: 15px;
+            color: var(--text-main);
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-md);
+            outline: none;
+            transition: all 0.2s ease;
+        }
 
-.sidebar a{
+        .search-wrap-vocab input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15);
+        }
 
-    display:block;
+        .search-btn-vocab {
+            height: 48px;
+            padding: 0 24px;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
 
-    text-decoration:none;
+        .search-btn-vocab:hover {
+            background: var(--primary-hover);
+        }
 
-    color:#333;
+        /* Hộp danh sách gợi ý Autocomplete */
+        .suggest-list {
+            position: absolute;
+            left: 0;
+            top: calc(100% + 6px);
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 6px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 90;
+            display: none; /* Ẩn mặc định, hiện bằng JS */
+        }
 
-    background:#fff4e8;
+        .suggest-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 14.5px;
+            transition: all 0.15s ease;
+        }
 
-    padding:18px;
+        .suggest-item:hover, .suggest-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
 
-    margin-bottom:15px;
+        /* ==========================================================================
+           5. ALERTS & CONTENT COMPONENT
+           ========================================================================== */
+        .error-alert {
+            background: #fef2f2;
+            color: #b91c1c;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            font-weight: 600;
+            border-left: 4px solid #ef4444;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-    border-radius:15px;
+        .results-container {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #334155;
+        }
 
-    transition:0.3s;
+        .empty-state {
+            background: var(--primary-light);
+            border: 1px dashed rgba(255, 107, 0, 0.2);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            color: #c25900;
+            font-weight: 500;
+text-align: center;
+        }
 
-}
-
-.sidebar a:hover{
-
-    background:#f57c00;
-
-    color:white;
-
-}
-/* Thêm class này để khống chế kích thước logo */
-.logo .logo-img {
-    height: 100px;       /* Hoặc đặt 120px giống trang chủ nếu ảnh logo của bạn cần kích thước đó */
-    width: auto;        /* Giữ nguyên tỷ lệ ảnh để không bị méo */
-    display: block;     /* Loại bỏ khoảng trống thừa phía dưới ảnh */
-}
-
-/* Nội dung */
-
-.content{
-
-    flex:1;
-
-    margin-left:30px;
-
-    background:white;
-
-    border-radius:20px;
-
-    padding:40px;
-
-    box-shadow:0 0 15px rgba(0,0,0,0.1);
-
-    min-height:500px;
-
-}
-
-.content h1{
-
-    color:#f57c00;
-
-    margin-bottom:30px;
-
-}
-
-.content p{
-
-    font-size:18px;
-
-    line-height:1.8;
-
-}
-
-</style>
+        @media (max-width: 1024px) {
+            .main-container { grid-template-columns: 1fr; gap: 24px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="navbar">
-
-    <div class="logo">
-        <img src="/static/fptulogo.png" alt="FPT University Logo" class="logo-img">
+    <div class="navbar">
+        <div class="logo">
+            <img src="/static/fptulogo.png" alt="FPT University Logo" class="logo-img">
+        </div>
+        <div class="menu">
+            <a href="/">Trang chủ</a>
+            <a href="/vocab">Thuật ngữ</a>
+            <a href="/study" class="active">Học tập</a>
+            <a href="/forum">Hỏi đáp</a>
+            <a href="/logout" class="logout-btn">Đăng xuất</a>
+        </div>
     </div>
 
-    <div class="menu">
+    <div class="main-container">
+        
+        <div class="sidebar-card">
+            <h2>📚 Nội dung học</h2>
+            <div class="sidebar-menu">
+                <a href="/hoc/Chuyên ngành" class="sidebar-item active">💻 Chuyên ngành</a>
+                <a href="/hoc/Võ Vovinam" class="sidebar-item">🥋 Võ Vovinam</a>
+                <a href="/hoc/Quân sự" class="sidebar-item">🎖️ Quân sự</a>
+                <a href="/hoc/Tiếng Anh đầu vào" class="sidebar-item">🇬🇧 Tiếng Anh đầu vào</a>
+                <a href="/hoc/Nhạc cụ dân tộc" class="sidebar-item">🎼 Nhạc cụ dân tộc</a>
+            </div>
+        </div>
 
-    <a href="/">Trang chủ</a>
+        <div class="content-card">
+            
+            {% if error_forum %}
+            <div class="error-alert">
+                <span>❌</span>
+                <div>{{ error_forum }}</div>
+            </div>
+            {% endif %}
 
-    <a href="/vocab">Thuật ngữ</a>
+            <h1>{{ tieu_de if tieu_de else "Định Nghĩa" }}</h1>
+            
+            <form class="search-form-vocab" method="GET" action="/vocab" id="search-form">
+                <div class="search-wrap-vocab">
+                    <input type="text" id="search-input" name="q" placeholder="Nhập hoặc tìm thuật ngữ (Ví dụ: OJT, LUK...)" autocomplete="off">
+                    
+                    <div class="suggest-list" id="suggest-list"></div>
+                </div>
+                <button type="submit" class="search-btn-vocab">Tìm kiếm</button>
+            </form>
 
-    <a href="/study">Học tập</a>
+            <div class="results-container">
+                {% if ketqua %}
+                    {{ ketqua | safe }}
+                {% else %}
+                    <div class="empty-state">
+                        💡 Hãy chọn một danh mục nội dung học tập ở bên trái hoặc nhập tìm kiếm thuật ngữ để hiển thị tài liệu chi tiết.
+                    </div>
+                {% endif %}
+            </div>
 
-    <a href="/forum">Hỏi đáp</a>
-
-    <a href="/logout">Đăng xuất</a>
-
-</div>
-
-</div>
-
-
-<div class="main">
-
-    <div class="sidebar">
-
-        <h2>📚 Nội dung học</h2>
-
-        <a href="/hoc/Chuyên ngành">💻 Chuyên ngành</a>
-
-        <a href="/hoc/Võ Vovinam">🥋 Võ Vovinam</a>
-
-        <a href="/hoc/Quân sự">🎖️ Quân sự</a>
-
-        <a href="/hoc/Tiếng Anh đầu vào">🇬🇧 Tiếng Anh đầu vào</a>
-
-        <a href="/hoc/Nhạc cụ dân tộc">🎼 Nhạc cụ dân tộc</a>
-
+        </div>
     </div>
-    <div class="content">
-    <h1>{{ tieu_de }}</h1>
-    
-    <div class="results-container">
-        {{ ketqua | safe }}
-    </div>
-</div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("search-input");
+            const suggestList = document.getElementById("suggest-list");
+            const searchForm = document.getElementById("search-form");
+            let currentFocus = -1;
+// Sự kiện khi người dùng gõ vào ô tìm kiếm
+            searchInput.addEventListener("input", function () {
+                const query = this.value.trim();
+                
+                if (query.length < 1) {
+                    suggestList.style.display = "none";
+                    return;
+                }
+
+                // Gọi API Backend lấy danh sách từ gợi ý (Thay thế endpoint phù hợp với Flask của bạn)
+                fetch(`/api/suggest?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestList.innerHTML = "";
+                        currentFocus = -1;
+
+                        if (data.length > 0) {
+                            data.forEach((item, index) => {
+                                const div = document.createElement("div");
+                                div.className = "suggest-item";
+                                div.innerText = item;
+                                
+                                // Sự kiện khi người dùng click chuột trực tiếp vào item gợi ý
+                                div.addEventListener("click", function () {
+                                    searchInput.value = this.innerText;
+                                    suggestList.style.display = "none";
+                                    searchForm.submit(); // Tự động submit tìm kiếm
+                                });
+
+                                suggestList.appendChild(div);
+                            });
+                            suggestList.style.display = "block";
+                        } else {
+                            suggestList.style.display = "none";
+                        }
+                    })
+                    .catch(() => suggestList.style.display = "none");
+            });
+
+            // Sự kiện điều khiển bằng bàn phím (Mũi tên lên, Mũi tên xuống, Enter)
+            searchInput.addEventListener("keydown", function (e) {
+                let items = suggestList.getElementsByClassName("suggest-item");
+                if (items.length === 0) return;
+
+                if (e.keyCode === 40) { // Phím MŨI TÊN XUỐNG
+                    currentFocus++;
+                    addActive(items);
+                } else if (e.keyCode === 38) { // Phím MŨI TÊN LÊN
+                    currentFocus--;
+                    addActive(items);
+                    e.preventDefault(); // Tránh việc con trỏ nhảy về đầu dòng text
+                } else if (e.keyCode === 13) { // Phím ENTER
+                    if (currentFocus > -1) {
+                        e.preventDefault(); // Chặn hành động submit form mặc định của trình duyệt
+                        if (items[currentFocus]) {
+                            items[currentFocus].click(); // Giả lập click chuột vào item đang chọn
+                        }
+}
+                }
+            });
+
+            function addActive(items) {
+                if (!items) return false;
+                removeActive(items);
+                
+                if (currentFocus >= items.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = items.length - 1;
+                
+                items[currentFocus].classList.add("active");
+                // Tự động cuộn hộp chứa nếu phần tử được chọn nằm ngoài tầm nhìn
+                items[currentFocus].scrollIntoView({ block: "nearest" });
+            }
+
+            function removeActive(items) {
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove("active");
+                }
+            }
+
+            // Đóng hộp gợi ý nếu người dùng nhấn chuột ra ngoài vùng tìm kiếm
+            document.addEventListener("click", function (e) {
+                if (e.target !== searchInput && e.target !== suggestList) {
+                    suggestList.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
