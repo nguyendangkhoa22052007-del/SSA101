@@ -61,11 +61,26 @@
     </button>
     </form>
 
-    <!-- MEANING -->
-    <div class="bg-orange-50 p-4 rounded-lg border border-orange-100 min-h-[120px]">
-        <p id="meaning" class="text-gray-800 text-lg leading-relaxed">
-            {{ meaning }}
-        </p>
+    <!-- MEANING & DEFINITION (ĐÃ TÁCH BIỆT KHÔNG BỊ DÍNH CHÙM) -->
+    <div class="bg-orange-50 p-6 rounded-lg border border-orange-100 min-h-[150px] space-y-4">
+        
+        <!-- Khung định nghĩa ngắn gọn -->
+        <div>
+            <p id="definition" class="text-gray-900 text-lg font-medium leading-relaxed">
+                {{ definition }}
+            </p>
+        </div>
+        
+        <!-- Đường kẻ phân cách mờ -->
+        <hr class="border-orange-200">
+
+        <!-- Khung ý nghĩa / giải thích chi tiết -->
+        <div>
+            <p id="meaning" class="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                {{ meaning }}
+            </p>
+        </div>
+
     </div>
 
 </div>
@@ -100,9 +115,16 @@ function loadWord(word){
     .then(res => res.json())
     .then(data => {
 
-        document.getElementById("meaning").innerText = data.meaning;
-
+        // Cập nhật tiêu đề thuật ngữ chính
         document.querySelector("h1").innerText = data.title;
+
+        // Cập nhật định nghĩa (nếu backend trả về trường data.definition)
+        if (document.getElementById("definition")) {
+            document.getElementById("definition").innerText = data.definition || "Đang cập nhật...";
+        }
+
+        // Cập nhật nội dung ý nghĩa
+        document.getElementById("meaning").innerText = data.meaning;
 
     });
 
@@ -111,7 +133,6 @@ function loadWord(word){
 <script src="{{ url_for('static', filename='search-suggest.js') }}"></script>
 <script>
   // Đặt ID hoặc Class cho cái khung chứa danh sách thuật ngữ (khung có scrollbar)
-  // Ví dụ khung đó là <div id="sidebar-lists" class="overflow-y-auto">
   const sidebar = document.getElementById('sidebar-lists') || document.querySelector('.overflow-y-auto');
 
   if (sidebar) {
