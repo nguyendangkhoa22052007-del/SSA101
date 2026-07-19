@@ -208,7 +208,8 @@ body {
 .slider-container {
     position: relative;
     width: 100%;
-    max-width: 300px; 
+    max-width: 700px;
+    height: 420px;
     margin: 0 auto;
     overflow: hidden;
     border-radius: 15px;
@@ -217,21 +218,22 @@ body {
 
 .slider-wrapper {
     display: flex;
-    align-items: center; 
+    align-items: center;
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    width: 500%; 
 }
 
 .slide {
-    width: 20%; 
+    min-width: 100%;
     flex-shrink: 0;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .slide img {
     width: 100%;
-    height: auto; 
+    height: 420px;
+    object-fit: contain;
     display: block;
+    background: #f8f8f8;
 }
 
 .slider-btn {
@@ -342,6 +344,7 @@ body {
 }
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -368,71 +371,67 @@ body {
     </div>
 
     <div class="content">
-        <h1>{{ tieu_de }}</h1>
+
+    <div class="study-title"
+style="
+background: linear-gradient(135deg, #f27121, #ffb347, #185a9d);
+color: white;
+padding: 25px 35px;
+border-radius: 20px;
+font-size: 32px;
+font-weight: bold;
+text-align: center;
+box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+margin-bottom: 25px;
+display: block;
+">
+    {{ tieu_de }}
+</div>
         
         <div id="excel-intro" class="intro-box"></div>
         
-        <div class="results-container">
-            <div class="left-column">
-                <div class="content-box" id="box-noi-dung">
-                    <h2>💻 Nội dung học</h2>
-                    <div class="box-body"></div>
-                </div>
-                
-                <div class="content-box" id="box-luu-y">
-                    <h2>⚠️ Lưu ý quan trọng</h2>
-                    <div class="box-body"></div>
-                </div>
+
+        <div id="raw-excel-storage" style="display: none;">
+    {{ ketqua | safe }}
+</div>
+
+{% if images %}
+<div class="slider-section">
+    <h2>📸 Hình ảnh nổi bật</h2>
+
+    <div class="slider-container">
+
+        <div class="slider-wrapper">
+            {% for image in images %}
+            <div class="slide">
+                <img src="{{ url_for('static', filename=image) }}" alt="Hình ảnh học tập">
             </div>
-            
-            <div class="right-column">
-                <div class="content-box" id="box-cach-hoc">
-                    <h2>🚀 Cách học hiệu quả</h2>
-                    <div class="box-body"></div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
 
-        <div id="raw-excel-storage" style="display: none;">{{ ketqua | safe }}</div>
+        <button class="slider-btn prev-btn">&#10094;</button>
+        <button class="slider-btn next-btn">&#10095;</button>
 
-        <div class="slider-section">
-            <h2>📸 Hình ảnh nổi bật</h2>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <div class="slide"><img src="/static/HT1.jpg" alt="Hình ảnh hoạt động 1"></div>
-                    <div class="slide"><img src="/static/HT2.jpg" alt="Hình ảnh hoạt động 2"></div>
-                    <div class="slide"><img src="/static/HT3.jpg" alt="Hình ảnh hoạt động 3"></div>
-                    <div class="slide"><img src="/static/HT4.jpg" alt="Hình ảnh hoạt động 4"></div>
-                    <div class="slide"><img src="/static/HT5.png" alt="Hình ảnh hoạt động 5"></div>
-                </div>
-                
-                <button class="slider-btn prev-btn">&#10094;</button>
-                <button class="slider-btn next-btn">&#10095;</button>
-                
-                <div class="slider-dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                </div>
-            </div>
+        <div class="slider-dots">
+            {% for image in images %}
+            <span class="dot {% if loop.first %}active{% endif %}"></span>
+            {% endfor %}
         </div>
+
     </div>
 </div>
+{% endif %}
+    </div> <!-- đóng .content -->
+</div> <!-- đóng .main -->
 
 <div class="image-preview-modal" id="imagePreviewModal">
     <span class="close-modal">&times;</span>
     <img src="" alt="Ảnh xem trước" class="zoomed-image" id="zoomedImage">
 </div>
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const storage = document.getElementById('raw-excel-storage');
     const introBox = document.getElementById('excel-intro');
-    const bodyNoiDung = document.querySelector('#box-noi-dung .box-body');
-    const bodyLuuY = document.querySelector('#box-luu-y .box-body');
-    const bodyCachHoc = document.querySelector('#box-cach-hoc .box-body');
     const sidebar = document.querySelector('.sidebar');
     
     if (!storage) return;
@@ -448,7 +447,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let cleanText = tempDiv.textContent || tempDiv.innerText || "";
 
     let lines = cleanText.split('||NEWLINE||');
-    let currentTargetBody = null;
 
     lines.forEach(line => {
         let trimmedLine = line.trim();
@@ -456,39 +454,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let cleanLine = trimmedLine.toLowerCase().replace(/[^a-z0-9 áàảãạâấầẩẫậăắằẳẵặéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ]/g, '').trim();
 
-        let isHeader = false;
-
-        if (cleanLine.includes('nội dung học') || cleanLine === 'nội dung') {
-            currentTargetBody = bodyNoiDung;
-            isHeader = true;
-        } else if (cleanLine.includes('lưu ý quan trọng') || cleanLine.includes('lưu ý')) {
-            currentTargetBody = bodyLuuY;
-            isHeader = true;
-        } else if (cleanLine.includes('cách học hiệu quả') || cleanLine.includes('cách học') || cleanLine.includes('phương pháp học')) {
-            currentTargetBody = bodyCachHoc;
-            isHeader = true;
-        }
-
-        if (isHeader) return;
 
         const p = document.createElement('p');
 
         if (trimmedLine.includes(':') && trimmedLine.indexOf(':') < 45) {
-            let colonIdx = trimmedLine.indexOf(':');
-            let keyTitle = trimmedLine.substring(0, colonIdx + 1);
-            let valueText = trimmedLine.substring(colonIdx + 1);
-            p.innerHTML = `<strong>${keyTitle}</strong>${valueText}`;
-        } else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
+    let colonIdx = trimmedLine.indexOf(':');
+    let keyTitle = trimmedLine.substring(0, colonIdx + 1);
+    let valueText = trimmedLine.substring(colonIdx + 1);
+
+    p.innerHTML = `<strong>${keyTitle}</strong>${valueText}`;
+
+} else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
             p.innerHTML = `• ${trimmedLine.substring(1).trim()}`;
         } else {
             p.textContent = trimmedLine;
         }
 
-        if (currentTargetBody) {
-            currentTargetBody.appendChild(p);
-        } else {
+        
             introBox.appendChild(p);
-        }
+        
     });
 
     if (introBox.children.length === 0) {
@@ -536,14 +520,18 @@ document.addEventListener("DOMContentLoaded", function() {
     
     let sliderIndex = 0;
     const maxSlides = slides.length;
+   
+
+
     let autoSlideTimer;
 
     function renderSlider() {
-        sliderWrapper.style.transform = `translateX(-${sliderIndex * 20}%)`;
-        dots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === sliderIndex);
-        });
-    }
+    sliderWrapper.style.transform = `translateX(-${sliderIndex * 100}%)`;
+
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === sliderIndex);
+    });
+}
 
     function changeToNextSlide() {
         sliderIndex = (sliderIndex + 1) % maxSlides;

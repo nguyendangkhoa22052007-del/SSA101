@@ -75,6 +75,40 @@ except Exception as e:
     print(f"❌ LỖI ĐỌC FILE EXCEL: Tắt file Excel nếu đang mở! Chi tiết: {e}")
     ds_thuat_ngu = []
     ds_hoc_tap = []
+    # ==========================
+# HÌNH ẢNH CHO TRANG HỌC TẬP
+# ==========================
+study_images = {
+    "Chuyên ngành": [
+        "study_images/chuyennganh/1.jpg",
+        "study_images/chuyennganh/2.jpg",
+        "study_images/chuyennganh/3.jpg",
+    ],
+
+    "Võ Vovinam": [
+        "study_images/vovinam/1.jpg",
+        "study_images/vovinam/2.jpg",
+        "study_images/vovinam/3.jpg",
+    ],
+
+    "Quân sự": [
+        "study_images/quansu/1.jpg",
+        "study_images/quansu/2.jpg",
+        "study_images/quansu/3.jpg",
+    ],
+
+    "Tiếng Anh đầu vào": [
+        "study_images/tienganh/1.png",
+        "study_images/tienganh/2.png",
+        "study_images/tienganh/3.jpg",
+    ],
+
+    "Nhạc cụ dân tộc": [
+        "study_images/nhaccu/1.jpg",
+        "study_images/nhaccu/2.jpg",
+        "study_images/nhaccu/3.jpg",
+    ]
+}
 
 # ==========================================================
 # HÀM BỔ TRỢ: FORMAT VĂN BẢN THÀNH 3 CARDS
@@ -209,7 +243,14 @@ def logout():
 def home():
     if "username" not in session:
         return redirect("/login")
-    return render_template("index.html", username=session["username"])
+
+    so_thuat_ngu = len(df)
+
+    return render_template(
+        "index.html",
+        username=session["username"],
+        so_thuat_ngu=so_thuat_ngu
+    )
 
 @app.route("/vocab")
 def vocab():
@@ -253,7 +294,8 @@ def study():
         tieu_de="Hỗ trợ học tập",
         ketqua="Hãy chọn một nội dung ở bên phải hoặc thanh tìm kiếm.",
         ds_hoc_tap=ds_hoc_tap, 
-        username=session["username"]
+        username=session["username"],
+        images=[]
     )
 
 @app.route("/hoc/<mon>")
@@ -261,19 +303,26 @@ def hoc(mon):
     if "username" not in session:
         return redirect("/login")
 
-    ket_qua = df_hoc[df_hoc["Nội dung học"].str.lower().str.strip() == mon.lower().strip()]
+    ket_qua = df_hoc[
+        df_hoc["Nội dung học"].str.lower().str.strip()
+        == mon.lower().strip()
+    ]
+
     if not ket_qua.empty:
         noidung = ket_qua.iloc[0]["Phương pháp học"]
         noidung = xu_ly_format_html(noidung)
     else:
         noidung = "Chưa có dữ liệu."
 
+    images = study_images.get(mon, [])
+
     return render_template(
         "study.html",
         tieu_de=mon,
         ketqua=noidung,
         ds_hoc_tap=ds_hoc_tap,
-        username=session["username"]
+        username=session["username"],
+        images=images
     )
 
 # ==========================

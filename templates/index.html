@@ -17,7 +17,6 @@
     <ul>
         <li><a href="/" class="active">TRANG CHỦ</a></li>
         <li><a href="/account">TÀI KHOẢN</a></li>
-        <li><a href="/more">THÔNG TIN THÊM</a></li>
         <li><a href="/logout">ĐĂNG XUẤT</a></li>
     </ul>
 </nav>
@@ -25,9 +24,23 @@
 
     <section class="banner-hero">
         <div class="banner-content">
-            <h1>Cổng Tra Cứu và Hỗ Trợ FPTUers</h1>
 
-            <form action="/tim-kiem" method="POST" class="search-form" autocomplete="off">
+    <div class="hero-text-box">
+
+        <h1>
+            Cổng Tra Cứu và Hỗ Trợ FPTUers
+        </h1>
+
+        <p class="hero-slogan">
+            Học không chỉ để cho bản thân,
+            mà còn để xứng đáng với sự hi sinh
+            của bao thế hệ trước.
+        </p>
+
+    </div>
+
+
+    <form action="/tim-kiem" method="POST" class="search-form" autocomplete="off">
                 <div class="search-wrap">
                     <input id="search-input" type="text" name="keyword" placeholder="Tìm kiếm thông tin học tập, thủ tục, v.v..." />
                     <button type="submit" class="search-btn">
@@ -38,7 +51,27 @@
             </form>
         </div>
     </section>
+<section class="stats-section">
 
+    <div class="stat-card">
+        <h2>📚</h2>
+        <h3>5</h3>
+        <p>Chuyên mục học</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>📖</h2>
+        <h3>{{ so_thuat_ngu }}</h3>
+        <p>Thuật ngữ</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>👤</h2>
+        <h3>{{ username }}</h3>
+        <p>Đang đăng nhập</p>
+    </div>
+
+</section>
     <section class="container-cards">
 
         <a href="/study" class="card-box">
@@ -75,12 +108,6 @@
 
     </section>
 
-    <a href="#" class="floating-chat-btn">
-        <span>Chat Trực Tuyến</span>
-        <div class="chat-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-        </div>
-    </a>
 
     <script src="{{ url_for('static', filename='search-suggest.js') }}"></script>
     
